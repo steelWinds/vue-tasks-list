@@ -1,0 +1,38 @@
+input.input-danger:not(:placeholder-shown) {
+  border-color: red !important;
+}
+
+textarea.input-danger:not(:placeholder-shown) {
+  border-color: red !important;
+}
+
+option:disabled {
+  display: none;
+}
+
+select:required:invalid {
+  color: rgba(0, 0, 0, .6);
+}
+
+input, 
+textarea, 
+select {
+  resize: none;
+}
+
+h2 {
+  @apply text-2xl font-semibold;
+}
+
+h1 {
+  @apply text-3xl font-bold;
+}
+
+html {
+  margin-right: calc(-1 * (100vw - 100%));
+  overflow-x: hidden;
+}
+
+.color-gray {
+  color: #35495e;
+}

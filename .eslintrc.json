@@ -1,0 +1,31 @@
+{
+  "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {  
+      "ecmaVersion": "latest",
+      "parser": "@babel/eslint-parser"
+    },
+    "rules": {
+      "no-tabs": ["error", {"allowIndentationTabs": true}],
+      "quotes": ["error", "single", {"allowTemplateLiterals": true}],
+      "semi": ["error", "always"],
+      "eqeqeq": ["error", "always"],
+      "no-var": "error",
+      "indent": ["error", 4],
+      "max-len": ["error", {"code": 80, "ignoreStrings": false}],
+      "no-unused-vars": "off",
+      "arrow-parens": "off", 
+      "object-curly-newline": "off", 
+      "no-mixed-operators": "off", 
+      "arrow-body-style": "off", 
+      "function-paren-newline": "off", 
+      "space-before-function-paren": "off", 
+      "array-element-newline": "off"
+    }
+}

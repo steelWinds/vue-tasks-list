@@ -1,0 +1,28 @@
+name: Deploy Action
+on: 
+  push: 
+    branch: 
+      -main
+jobs: 
+  build-and-deploy: 
+    runs-on: ubuntu-latest
+    steps: 
+      -name: Use Checkout
+        uses: actions/checkout@v2
+      
+      -name: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      -name: Install packages
+        run: npm ci
+        run: npm run build
+      
+      -name: Lint 
+        run: npm run lint 
+      
+      -name: Deploy
+        uses: JamesIves/github-page-deploy-action@4.1.5
+          with:
+            branch: prod
+            folder: dist
