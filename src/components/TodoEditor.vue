@@ -10,28 +10,50 @@
         <form 
             class="todo-editor__form">
             
-            <input 
-                class="w-full sm:w-auto" 
-                :class="titleValid"
-                type="text" 
-                placeholder="Input your title"
-                v-model="titleModel">
-            <input 
-                class="w-full sm:w-auto"
-                :class="subtitleValid" 
-                type="text" 
-                placeholder="Input your subtitle"
-                v-model="subtitleModel">
-            <textarea 
-                class="w-full"
-                :class="contentValid"
-                name="Text of todo" 
-                placeholder="Input your text"
-                rows="10"
-                v-model="contentModel"
-                @keydown.tab.prevent="tabSize(
-                    $event, 'contentModel'
-                )"></textarea>
+            <section class="flex flex-col w-full sm:w-auto">
+                <span
+                    v-if="invalids.list.has('titleModel')" 
+                    class="mb-2 text-red-900"> 
+                    Invalid 
+                </span>
+                <input 
+                    class="w-full sm:w-auto" 
+                    :class="checkValid('titleModel', titleModel, 1)"
+                    type="text" 
+                    placeholder="Input your title"
+                    v-model="titleModel"
+                    >
+            </section>
+            <section class="flex flex-col w-full sm:w-auto">
+                <span 
+                    v-if="invalids.list.has('subtitleModel')"
+                    class="mb-2 text-red-900"> 
+                    Invalid 
+                </span>
+                <input 
+                    class="w-full sm:w-auto"
+                    :class="checkValid('subtitleModel', subtitleModel, 1)" 
+                    type="text" 
+                    placeholder="Input your subtitle"
+                    v-model="subtitleModel">
+            </section>
+            <section class="flex flex-col w-full">
+                <span 
+                    v-if="invalids.list.has('contentModel')"
+                    class="mb-2 text-red-900"> 
+                    Invalid 
+                </span>
+                <textarea 
+                    class="w-full"
+                    :class="checkValid('contentModel', contentModel, 1)"
+                    name="Text of todo" 
+                    placeholder="Input your text"
+                    rows="10"
+                    v-model="contentModel"
+                    @keydown.tab.prevent="tabSize(
+                        $event, 'contentModel'
+                    )"></textarea>
+            </section>
 
             <material-button
                 class="todo-editor__btn"
@@ -52,7 +74,12 @@ export default {
         return {
             titleModel: '',
             subtitleModel: '',
-            contentModel: ''
+            contentModel: '',
+            invalids: {
+                write: false,
+                list: new Map()
+            },
+            
         };
     },
 
@@ -62,38 +89,6 @@ export default {
 
     components: {
         MaterialButton
-    },
-
-    computed: {
-        titleValid() {
-            if (this.titleModel.length < 15) {
-                return {
-                    'input-danger': true
-                };
-            }
-
-            return false;
-        },
-
-        subtitleValid() {
-            if (this.subtitleModel.length < 10) {
-                return {
-                    'input-danger': true
-                };
-            }
-
-            return false;
-        },
-        
-        contentValid() {
-            if (this.contentModel.length < 15) {
-                return {
-                    'input-danger': true
-                };
-            }
-
-            return false;
-        }
     },
     
     methods: {
@@ -116,23 +111,34 @@ export default {
             }, 0);
         },
 
-        isInvalid(value, target, length) {
-            let setClass = false;
+        checkValid(modelName, model, length) {
+            if (model.length <= length) {
+                if (this.invalids.write === true) {
+                    this.invalids.list.set(modelName, true);
+                }
 
-            if (value < length) {
-                setClass = true;
+                return {
+                    'input-danger': true
+                };
             }
 
-            return {
-                'input-danger': setClass
-            };
+            if (this.invalids.write === true) {
+                this.invalids.list.delete(modelName);
+            }
+
+            return false;
         },
 
-        addTask() {
-            if (this.titleValid || this.subtitleValid || this.contentValid) {
+        addTask() { 
+            if (this.checkValid('titleModel', this.titleModel, 1) 
+                || this.checkValid('subtitleModel', this.subtitleModel, 1)  
+                || this.checkValid('contentModel', this.contentModel, 1)) {
+                this.invalids.write = true;
 
                 return;
             }
+
+            this.invalids.write = false;
 
             let currentLengthList = this.tasksList.value.size; 
 
@@ -204,7 +210,7 @@ export default {
         
         background-color: #42b883;
 
-        &:hover, &:active, &:focus {
+        &:hover, &:active {
             border-bottom-color: #42b883;
 
             background-color: white;
