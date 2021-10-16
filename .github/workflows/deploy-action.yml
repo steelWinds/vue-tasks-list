@@ -23,6 +23,6 @@ jobs:
       
       - name: Deploy
         uses: JamesIves/github-page-deploy-action@4.1.5
-          with:
-            branch: prod
-            folder: dist
+        with:
+          branch: prod
+          folder: dist
