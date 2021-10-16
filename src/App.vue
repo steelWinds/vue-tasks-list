@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent, markRaw, computed } from 'vue';
+import { computed } from 'vue';
 
 import TodoList from './components/TodoList.vue';
 import TodoEditor from './components/TodoEditor.vue';
