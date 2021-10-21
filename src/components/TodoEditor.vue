@@ -63,6 +63,12 @@
                 </template>
             </material-button>
         </form>
+
+        <transition name="task-notification">
+            <h3 v-if="taskIsAdd === true" class="task-add-notification mt-6">
+                Task added!
+            </h3>
+        </transition>
     </article>
 </template>
 
@@ -79,7 +85,7 @@ export default {
                 write: false,
                 list: new Map()
             },
-            
+            taskIsAdd: false
         };
     },
 
@@ -150,12 +156,40 @@ export default {
                     content: this.contentModel  
                 }
             );
+
+            this.addedNotification();
+        },
+
+        addedNotification() {
+            this.taskIsAdd = true;
+
+            setTimeout(() => {
+                this.taskIsAdd = false;
+            }, 1000);
         }
     }
 };
 </script>
 
 <style>
+.task-notification-enter-active {
+    transition: all .35s ease-out;
+}
+
+.task-notification-leave-active {
+    transition: all .15s ease-in;
+}
+
+.task-notification-enter-from,
+.task-notification-leave-to {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.task-add-notification {
+    color: #42b883;
+}
+
 .todo-editor {
     @apply 
         w-full

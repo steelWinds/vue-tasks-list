@@ -3,7 +3,7 @@
         <h2 class="todo-list__title mt-2 mb-10">Tasks List</h2>
 
         <h2 
-            class="text-center color-gray"
+            class="no-items-title text-center color-gray"
             v-if="tasksList.value.size === 0">
             
             No Tasks, please add them
@@ -48,6 +48,18 @@ export default {
 </script>
 
 <style>
+@keyframes show {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
+}
+
+.no-items-title {
+    animation: show .45s ease-in-out;
+}
+
 .todo-list {
     @apply 
         flex

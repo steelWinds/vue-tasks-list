@@ -12,10 +12,14 @@
             :currentComponent="currentComponent"></header>
 
         <main>
-            <todo-list 
-                v-show="currentComponent === 'todo-list'"></todo-list>
-            <todo-editor 
-                v-show="currentComponent === 'todo-editor'"></todo-editor>
+            <transition name="todo-components" mode="out-in">
+                <todo-list 
+                    v-if="currentComponent === 'todo-list'">
+                </todo-list>
+                <todo-editor 
+                    v-else-if="currentComponent === 'todo-editor'">
+                </todo-editor>
+            </transition>
         </main>
     </article>
 </template>
@@ -67,7 +71,17 @@ export default {
 </script>
 
 <style>
-.container {
-    
+.todo-components-enter-active {
+    transition: all .35s ease-out;
+}
+
+.todo-components-leave-active {
+    transition: all .15s ease-in;
+}
+
+.todo-components-enter-from,
+.todo-components-leave-to {
+    opacity: 0;
+    transform: translateY(-100px);
 }
 </style>

@@ -20,6 +20,10 @@ select {
   resize: none;
 }
 
+h3 {
+  @apply text-xl font-semibold;
+}
+
 h2 {
   @apply text-2xl font-semibold;
 }
