@@ -1,3 +1,5 @@
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/steelWinds/vue-tasks-list/deploy-action)](https://actions-badge.atrox.dev/steelWinds/starterkit-gulp-config/goto?ref=main)
+
 # vue-tasks-list
 
 This simple app on vue
