@@ -1,3 +1,5 @@
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/steelWinds/vue-tasks-list/deploy-action)](https://actions-badge.atrox.dev/steelWinds/vue-tasks-list/goto?ref=main)
+
 # vue-tasks-list
 
 This simple app on vue
@@ -23,4 +25,5 @@ This project have not license
 
 # Authors
 
-- [Kirill](https://github.com/steelWinds)
+- [Kirill](https://github.com/steelWinds) by **Frontend**
+- [Artyom](https://github.com/artemowkin) by **Backend**
