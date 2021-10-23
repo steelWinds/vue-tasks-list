@@ -25,4 +25,5 @@ This project have not license
 
 # Authors
 
-- [Kirill](https://github.com/steelWinds)
+- [Kirill](https://github.com/steelWinds) by **Frontend**
+- [Artyom](https://github.com/artemowkin) by **Backend**
