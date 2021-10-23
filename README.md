@@ -1,4 +1,4 @@
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/steelWinds/vue-tasks-list/deploy-action)](https://actions-badge.atrox.dev/steelWinds/vue-tasks-list/goto?ref=main)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/steelWinds/vue-tasks-list/Deploy-Action)](https://actions-badge.atrox.dev/steelWinds/vue-tasks-list/goto?ref=main)
 
 # vue-tasks-list
 
