@@ -9,7 +9,8 @@
 
         <header 
             is="vue:header"
-            :currentComponent="currentComponent"></header>
+            :currentComponent="currentComponent"
+            :style="{position: headerPositionType}"></header>
 
         <main>
             <transition name="todo-components" mode="out-in">
@@ -17,7 +18,9 @@
                     @updateTasksList="getTasksList" 
                     v-if="currentComponent === 'todo-list'">
                 </todo-list>
-                <todo-editor 
+
+                <todo-editor
+                    @switchHeaderPositionType="switchHeaderPositionType" 
                     @updateTasksList="getTasksList"
                     v-else-if="currentComponent === 'todo-editor'">
                 </todo-editor>
@@ -29,6 +32,7 @@
 <script>
 import { computed } from 'vue';
 import { minima } from './modules/minima.js';
+import ScrollReveal from 'scrollreveal';
 
 import TodoList from './components/TodoList.vue';
 import TodoEditor from './components/TodoEditor.vue';
@@ -38,7 +42,10 @@ export default {
     data() {
         return {
             currentComponent: 'todo-list',
-            tasksList: []
+            tasksList: {
+                length: null
+            },
+            headerPositionType: 'sticky'
         };
     },
 
@@ -73,15 +80,23 @@ export default {
             this.currentComponent = component;
         },
 
-        async getTasksList() {
+        async getTasksList(callback = function() {}) {
             let tasksList = await minima({
                 url: 'https://mtasks.herokuapp.com/tasks/',
                 json: true
             }); 
 
-            this.tasksList = tasksList;
+            this.tasksList = tasksList.reverse();
 
-            console.log(tasksList);
+            callback();
+        },
+
+        switchHeaderPositionType(type) {
+            if (type !== 'static' && type !== 'sticky') {
+                return;
+            }
+
+            this.headerPositionType = type;
         }
     },
 

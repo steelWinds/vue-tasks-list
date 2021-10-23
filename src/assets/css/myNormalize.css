@@ -37,6 +37,10 @@ html {
   overflow-x: hidden;
 }
 
+html.sr .load-reveal {
+  visibility: hidden;
+}
+
 .color-gray {
   color: #35495e;
 }

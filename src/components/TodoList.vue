@@ -9,12 +9,24 @@
             No Tasks, please add them
         </h2>
 
-        <section class="todo-list__items">
+        <h2
+            class="no-items-title text-center color-gray"
+            v-else-if="tasksList.value.length === null">
+            
+            Wait for tasks load
+            
+        </h2>
+
+        <section 
+            class="todo-list__items"
+            v-else>
+            
             <template
                 v-for="task of tasksList.value"
                 :key="task.pk">
 
                 <todo-item 
+                    class="load-reveal"
                     v-bind="task"
                     @removeItem="removeItem(task.pk)"></todo-item>
             </template>
@@ -24,12 +36,14 @@
 
 <script>
 import { minima } from '../modules/minima.js';
+import ScrollReveal from 'scrollreveal';
 
 import TodoItem from './TodoItem.vue';
 
 export default {
     data() {
         return {
+            revealOn: false
         };
     },
 
@@ -43,6 +57,26 @@ export default {
 
     components: {
         TodoItem,
+    },
+
+    mounted() {
+        ScrollReveal().sync();
+    },
+
+    updated() {
+        if (this.revealOn === false) {
+            ScrollReveal({
+                duration: 350,
+                easing: 'ease-in-out',
+                opacity: .5,
+                distance: '30px',
+                reset: true
+            }).reveal('.todo-item');
+
+            this.revealOn = true;
+        }
+
+        console.log(1);
     },
 
     methods: {

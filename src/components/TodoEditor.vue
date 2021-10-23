@@ -102,6 +102,14 @@ export default {
     components: {
         MaterialButton
     },
+
+    mounted() {
+        this.$emit('switchHeaderPositionType', 'static');
+    },
+
+    unmounted() {
+        this.$emit('switchHeaderPositionType', 'sticky');
+    },
     
     methods: {
         tabSize(event, textModel) {
@@ -169,8 +177,6 @@ export default {
                 }
             });
 
-            console.log(postTask);
-
             this.$emit('updateTasksList');
 
             this.addedNotification();
@@ -199,11 +205,25 @@ export default {
 .task-notification-enter-from,
 .task-notification-leave-to {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(-30px);
 }
 
 .task-add-notification {
+    position: fixed;
+    top: 100px;
+
+    padding: 1em;
+    border: .1em solid #42b883;
+    border-radius: 10px;
+
+    background-color: white;
     color: #42b883;
+
+    z-index: 100;
+
+    @media (max-width: 768px) {
+        top: 155px;
+    }
 }
 
 .todo-editor {
