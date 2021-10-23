@@ -73,6 +73,8 @@
 </template>
 
 <script>
+import { minima } from '../modules/minima.js';
+
 import MaterialButton from './MaterialButton.vue';
 
 export default {
@@ -91,6 +93,10 @@ export default {
 
     inject: [
         'tasksList'
+    ],
+
+    emits: [
+        'updateTasksList'
     ],
 
     components: {
@@ -135,7 +141,7 @@ export default {
             return false;
         },
 
-        addTask() { 
+        async addTask() { 
             if (this.checkValid('titleModel', this.titleModel, 1) 
                 || this.checkValid('subtitleModel', this.subtitleModel, 1)  
                 || this.checkValid('contentModel', this.contentModel, 1)) {
@@ -146,16 +152,26 @@ export default {
 
             this.invalids.write = false;
 
-            let currentLengthList = this.tasksList.value.size; 
+            let currentIndex = this.tasksList.value.length;
 
-            this.tasksList.value.set(
-                currentLengthList + 1,
-                {
-                    title: this.titleModel,
-                    subtitle: this.subtitleModel,
-                    content: this.contentModel  
+            let taskBody = {
+                title: this.titleModel,
+                subtitle: this.subtitleModel,
+                text: this.contentModel
+            };
+
+            let postTask = await minima({
+                url: 'https://mtasks.herokuapp.com/tasks/',
+                method: 'POST',
+                body: JSON.stringify(taskBody),
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
                 }
-            );
+            });
+
+            console.log(postTask);
+
+            this.$emit('updateTasksList');
 
             this.addedNotification();
         },

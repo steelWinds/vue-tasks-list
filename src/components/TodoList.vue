@@ -4,25 +4,27 @@
 
         <h2 
             class="no-items-title text-center color-gray"
-            v-if="tasksList.value.size === 0">
+            v-if="tasksList.value.length === 0">
             
             No Tasks, please add them
         </h2>
 
         <section class="todo-list__items">
             <template
-                v-for="[key, task] of tasksList.value"
-                :key="key">
+                v-for="task of tasksList.value"
+                :key="task.pk">
 
                 <todo-item 
                     v-bind="task"
-                    @removeItem="removeItem(key)"></todo-item>
+                    @removeItem="removeItem(task.pk)"></todo-item>
             </template>
         </section>
     </article>
 </template>
 
 <script>
+import { minima } from '../modules/minima.js';
+
 import TodoItem from './TodoItem.vue';
 
 export default {
@@ -35,13 +37,22 @@ export default {
         'tasksList'
     ],
 
+    emit: [
+        'updateTasksList'
+    ],
+
     components: {
         TodoItem,
     },
 
     methods: {
-        removeItem(key) {
-            this.tasksList.value.delete(key);
+        async removeItem(key) {
+            let deleteTask = await minima({
+                url: `https://mtasks.herokuapp.com/tasks/${key}/`,
+                method: 'DELETE'
+            });    
+
+            this.$emit('updateTasksList');
         }
     }
 };

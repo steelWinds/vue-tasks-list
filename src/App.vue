@@ -13,10 +13,12 @@
 
         <main>
             <transition name="todo-components" mode="out-in">
-                <todo-list 
+                <todo-list
+                    @updateTasksList="getTasksList" 
                     v-if="currentComponent === 'todo-list'">
                 </todo-list>
                 <todo-editor 
+                    @updateTasksList="getTasksList"
                     v-else-if="currentComponent === 'todo-editor'">
                 </todo-editor>
             </transition>
@@ -26,6 +28,7 @@
 
 <script>
 import { computed } from 'vue';
+import { minima } from './modules/minima.js';
 
 import TodoList from './components/TodoList.vue';
 import TodoEditor from './components/TodoEditor.vue';
@@ -35,7 +38,7 @@ export default {
     data() {
         return {
             currentComponent: 'todo-list',
-            tasksList: new Map()
+            tasksList: []
         };
     },
 
@@ -61,9 +64,24 @@ export default {
         TodoEditor
     },
 
+    mounted() {
+        this.getTasksList();
+    },
+
     methods: {
         switchComponent(component) {
             this.currentComponent = component;
+        },
+
+        async getTasksList() {
+            let tasksList = await minima({
+                url: 'https://mtasks.herokuapp.com/tasks/',
+                json: true
+            }); 
+
+            this.tasksList = tasksList;
+
+            console.log(tasksList);
         }
     },
 

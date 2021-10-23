@@ -18,7 +18,7 @@
         </i>
 
         <p class="todo-item__content mt-3">
-            {{ this.content }}
+            {{ this.text }}
         </p>
     </article>
 </template>
@@ -34,7 +34,7 @@ export default {
     props: {
         title: String,
         subtitle: String,
-        content: String
+        text: String
     },
 
     emits: [
@@ -61,7 +61,7 @@ export default {
     text-overflow: ellipsis;
 
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: auto !important;
 
     @media(max-width: 640px) {
         & {
