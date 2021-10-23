@@ -86,7 +86,7 @@ export default {
                 json: true
             }); 
 
-            this.tasksList = tasksList.reverse();
+            this.tasksList = tasksList;
 
             callback();
         },

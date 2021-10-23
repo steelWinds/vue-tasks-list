@@ -60,21 +60,13 @@ export default {
     },
 
     mounted() {
+        this.addRevealOnList();
+
         ScrollReveal().sync();
     },
 
     updated() {
-        if (this.revealOn === false) {
-            ScrollReveal({
-                duration: 350,
-                easing: 'ease-in-out',
-                opacity: .5,
-                distance: '30px',
-                reset: true
-            }).reveal('.todo-item');
-
-            this.revealOn = true;
-        }
+        this.addRevealOnList();
 
         console.log(1);
     },
@@ -87,6 +79,20 @@ export default {
             });    
 
             this.$emit('updateTasksList');
+        },
+
+        addRevealOnList() {
+            if (this.revealOn === false) {
+                ScrollReveal({
+                    duration: 350,
+                    easing: 'ease-in-out',
+                    opacity: .5,
+                    distance: '30px',
+                    reset: true
+                }).reveal('.todo-item');
+
+                this.revealOn = true;
+            }
         }
     }
 };
