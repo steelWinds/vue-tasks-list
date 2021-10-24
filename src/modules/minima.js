@@ -19,7 +19,13 @@ let minima = async ({
         requestObject.body = body;
     }
 
-    let networkResponse = await fetch(url, requestObject);
+    let networkResponse = null;
+
+    try {
+        networkResponse = await fetch(url, requestObject);
+    } catch(err) {
+        throw new err.prototype;
+    }
 
     if (networkResponse.ok) {
         if (json === true) {
