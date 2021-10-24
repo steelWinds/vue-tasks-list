@@ -38,14 +38,13 @@
 <script>
 import { minima } from '../modules/minima.js';
 import ScrollReveal from 'scrollreveal';
+import { blockCall } from '../modules/blockCall.js';
 
 import TodoItem from './TodoItem.vue';
 
 export default {
     data() {
-        return {
-            revealOn: false
-        };
+        return {};
     },
 
     inject: [
@@ -61,11 +60,13 @@ export default {
     },
 
     mounted() {
-        this.addRevealOnList(true);
+        this.updateRevealList = blockCall(this.addRevealOnList, 1);
+
+        this.addRevealOnList();
     },
 
     updated() {
-        this.addRevealOnList(); 
+        this.updateRevealList();
     },
 
     methods: {
@@ -80,22 +81,13 @@ export default {
             this.tasksList.value.splice(index, 1);
         },
 
-        addRevealOnList( unlock = false ) {
-            if (this.revealOn === true && unlock === false) {
-                return;
-            }
-
-            if (unlock === false) {
-                this.revealOn = true;
-            }
-
+        addRevealOnList() {
             ScrollReveal({
                 duration: 350,
                 distance: '30px',
                 opacity: .3,
                 scale: .95,
             }).reveal('.todo-item');
-
         }
             
     }
