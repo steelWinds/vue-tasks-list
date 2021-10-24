@@ -4,7 +4,9 @@
         :class="adittClass"
         class="material-button">
         
-        <slot name="content"></slot>
+        <slot>
+            Click me
+        </slot>
     </button>
 </template>
 
@@ -25,7 +27,7 @@ export default {
 
     emits: [
         'clickEvent'
-    ]
+    ],
 };
 </script>
 

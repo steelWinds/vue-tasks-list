@@ -2,7 +2,8 @@
     <header 
         class="
             header
-            w-full"> 
+            w-full"
+        :style="{'position': positionType}"> 
 
         <h1 class="header__title">
             <a href="./index.html">
@@ -18,18 +19,14 @@
                 @clickEvent="switchComponent(this.components.todoList)"
                 :adittClass="checkActive(this.components.todoList)">
 
-                <template #content>
-                    list
-                </template>
+                list
             </material-button>
             
             <material-button
                 @clickEvent="switchComponent(this.components.todoEditor)"
                 :adittClass="checkActive(this.components.todoEditor)">
                 
-                <template #content>
-                    write
-                </template>
+                write
             </material-button>
         </section>
     </header>
@@ -43,7 +40,7 @@ import MaterialButton from './MaterialButton.vue';
 export default {
     data() {
         return {
-
+            componentIs: this.currentComponent
         };
     },
 
@@ -55,16 +52,32 @@ export default {
         'components', 
         'currentComponent',
         'switchComponent'
-    ],  
+    ],
 
     methods: {
         checkActive(component) {
-            let result = this.currentComponent.value === component;
+            let result = this.currentComponent === component;
 
             return {
                 ['material-button_active']: result
             };
         },
+    },
+
+    computed: {
+        positionType() {
+            let styleObject = {
+                'position': ''
+            };
+
+            if (this.componentIs === 'todo-editor') {
+                styleObject['position'] = 'static';
+            } else if (this.componentIs === 'todo-list') {
+                styleObject['position'] = 'sticky';
+            }
+
+            return styleObject;
+        }
     }
 };
 </script>

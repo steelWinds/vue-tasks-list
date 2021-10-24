@@ -2,7 +2,7 @@
     <article class="todo-item">
         <material-button
             class="todo-item__btn"
-            @clickEvent="removeTask()">
+            @clickEvent="removeTask">
             
             <template #content>
                 remove
@@ -34,12 +34,12 @@ export default {
     props: {
         title: String,
         subtitle: String,
-        text: String
+        text: String,
     },
 
     emits: [
         'removeTaskInServer',
-        'removeLocalTask'
+        'removeLocaleTask'
     ],
 
     components: {
@@ -49,7 +49,6 @@ export default {
     methods: {
         removeTask() {
             this.$emit('removeLocaleTask');
-
             this.$emit('removeTaskInServer');
         }
     }

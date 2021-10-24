@@ -50,6 +50,7 @@
                     placeholder="Input your text"
                     rows="10"
                     v-model="contentModel"
+                    @keydown.ctrl.enter.exact="addTask()"
                     @keydown.tab.prevent="tabSize(
                         $event, 'contentModel'
                     )"></textarea>
@@ -57,25 +58,38 @@
 
             <material-button
                 class="todo-editor__btn"
-                @clickEvent="addTask()">
-                <template #content>
-                    add task
-                </template>
+                @clickEvent="addTask()"
+                ref="addBtn">
+
+                add task
             </material-button>
         </form>
 
-        <transition name="task-notification">
-            <h3 v-if="taskIsAdd === true" class="task-add-notification mt-6">
-                Task added!
-            </h3>
+        <transition name="slide-up-right">
+            <notification
+                styleType="valid"
+                v-if="taskIsAdd.status === true">
+
+                Task added
+            </notification>
+
+            <notification
+                styleType="invalid"
+                v-else-if="postingError.status === true">
+                
+                {{ this.postingError.error.message }}
+            </notification>
         </transition>
     </article>
 </template>
 
 <script>
+import { computed } from 'vue';
 import { minima } from '../modules/minima.js';
+import { switchThroughTime } from '../modules/switchThroughTime.js';
 
 import MaterialButton from './MaterialButton.vue';
+import Notification from './Notification.vue';
 
 export default {
     data() {
@@ -87,20 +101,33 @@ export default {
                 write: false,
                 list: new Map()
             },
-            taskIsAdd: false
+            taskIsAdd: {
+                status: false
+            },
+            postingError: {
+                status: false,
+                error: null
+            }
         };
     },
 
-    inject: [
-        'tasksList'
+    emits: [
+        'switchHeaderPositionType'
     ],
 
-    emits: [
-        'updateTasksList'
-    ],
+    computed: {
+        taskObject() {
+            return {
+                title: this.titleModel,
+                subtitle: this.subtitleModel,
+                text: this.contentModel
+            };
+        }
+    },
 
     components: {
-        MaterialButton
+        MaterialButton,
+        Notification
     },
 
     mounted() {
@@ -160,72 +187,40 @@ export default {
 
             this.invalids.write = false;
 
-            let currentIndex = this.tasksList.value.length;
+            let postTask = null;
 
-            let taskBody = {
-                title: this.titleModel,
-                subtitle: this.subtitleModel,
-                text: this.contentModel
-            };
+            try {
+                postTask = await minima({
+                    url: 'https://mtasks.herokuapp.com/tasks/',
+                    method: 'POST',
+                    body: JSON.stringify(this.taskObject),
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    }
+                });
+            } catch(err) {
+                this.postingError.error = err;
 
-            let postTask = await minima({
-                url: 'https://mtasks.herokuapp.com/tasks/',
-                method: 'POST',
-                body: JSON.stringify(taskBody),
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                }
+                this.$refs.addBtn.$el.blur();
+
+                return switchThroughTime({
+                    target: this.postingError,
+                    delay: 1000
+                });
+            }
+
+            this.$refs.addBtn.$el.blur();
+
+            switchThroughTime({
+                target: this.taskIsAdd,
+                delay: 1000
             });
-
-            this.$emit('updateTasksList');
-
-            this.addedNotification();
         },
-
-        addedNotification() {
-            this.taskIsAdd = true;
-
-            setTimeout(() => {
-                this.taskIsAdd = false;
-            }, 1000);
-        }
     }
 };
 </script>
 
 <style>
-.task-notification-enter-active {
-    transition: all .35s ease-out;
-}
-
-.task-notification-leave-active {
-    transition: all .15s ease-in;
-}
-
-.task-notification-enter-from,
-.task-notification-leave-to {
-    opacity: 0;
-    transform: translateY(-30px);
-}
-
-.task-add-notification {
-    position: fixed;
-    top: 100px;
-
-    padding: 1em;
-    border: .1em solid #42b883;
-    border-radius: 10px;
-
-    background-color: white;
-    color: #42b883;
-
-    z-index: 100;
-
-    @media (max-width: 768px) {
-        top: 155px;
-    }
-}
-
 .todo-editor {
     @apply 
         w-full
@@ -256,7 +251,7 @@ export default {
 
             &:active, &:focus {
                 outline: none;
-                border-radius: 6px !important;
+                border-radius: 5px !important;
                 border-style: dashed;
             }
         }
@@ -280,7 +275,7 @@ export default {
         
         background-color: #42b883;
 
-        &:hover, &:active {
+        &:focus, &:active {
             border-bottom-color: #42b883;
 
             background-color: white;
