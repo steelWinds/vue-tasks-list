@@ -22,13 +22,14 @@
             v-else>
             
             <template
-                v-for="task of tasksList.value"
-                :key="task.pk">
+                v-for="(task, index) in tasksList.value"
+                :key="index">
 
                 <todo-item 
-                    class="load-reveal"
+                    
                     v-bind="task"
-                    @removeItem="removeItem(task.pk)"></todo-item>
+                    @removeTaskInServer="removeTask(task.pk)"
+                    @removeLocaleTask="removeLocaleTask(index)"></todo-item>
             </template>
         </section>
     </article>
@@ -60,40 +61,43 @@ export default {
     },
 
     mounted() {
-        this.addRevealOnList();
-
-        ScrollReveal().sync();
+        this.addRevealOnList(true);
     },
 
     updated() {
-        this.addRevealOnList();
-
-        console.log(1);
+        this.addRevealOnList(); 
     },
 
     methods: {
-        async removeItem(key) {
+        async removeTask(key) {
             let deleteTask = await minima({
                 url: `https://mtasks.herokuapp.com/tasks/${key}/`,
                 method: 'DELETE'
             });    
-
-            this.$emit('updateTasksList');
         },
 
-        addRevealOnList() {
-            if (this.revealOn === false) {
-                ScrollReveal({
-                    duration: 350,
-                    easing: 'ease-in-out',
-                    opacity: .5,
-                    distance: '30px',
-                    reset: true
-                }).reveal('.todo-item');
+        removeLocaleTask(index) {
+            this.tasksList.value.splice(index, 1);
+        },
 
+        addRevealOnList( unlock = false ) {
+            if (this.revealOn === true && unlock === false) {
+                return;
+            }
+
+            if (unlock === false) {
                 this.revealOn = true;
             }
+
+            ScrollReveal({
+                duration: 350,
+                distance: '30px',
+                opacity: .3,
+                scale: .95,
+            }).reveal('.todo-item');
+
         }
+            
     }
 };
 </script>
