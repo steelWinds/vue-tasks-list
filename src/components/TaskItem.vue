@@ -4,9 +4,7 @@
             class="todo-item__btn"
             @clickEvent="removeTask">
             
-            <template #content>
-                remove
-            </template>
+            remove
         </material-button>
 
         <h3 class="todo-item__title mb-1">
