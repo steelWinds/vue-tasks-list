@@ -3,7 +3,7 @@
         class="
             header
             w-full"
-        :style="{'position': positionType}"> 
+        :style="positionType"> 
 
         <h1 class="header__title">
             <a href="./index.html">
@@ -39,9 +39,7 @@ import MaterialButton from './MaterialButton.vue';
 
 export default {
     data() {
-        return {
-            componentIs: this.currentComponent
-        };
+        return {};
     },
 
     components: {
@@ -70,9 +68,9 @@ export default {
                 'position': ''
             };
 
-            if (this.componentIs === 'todo-editor') {
+            if (this.currentComponent === this.components.todoEditor) {
                 styleObject['position'] = 'static';
-            } else if (this.componentIs === 'todo-list') {
+            } else if (this.currentComponent === this.components.todoList) {
                 styleObject['position'] = 'sticky';
             }
 
