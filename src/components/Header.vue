@@ -69,9 +69,9 @@ export default {
             };
 
             if (this.currentComponent === this.components.todoEditor) {
-                styleObject['position'] = 'static';
+                styleObject['top'] = 'auto';
             } else if (this.currentComponent === this.components.todoList) {
-                styleObject['position'] = 'sticky';
+                styleObject['top'] = '0';
             }
 
             return styleObject;

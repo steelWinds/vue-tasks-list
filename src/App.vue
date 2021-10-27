@@ -10,7 +10,7 @@
         <header is="vue:header"></header>
 
         <main>
-            <transition name="todo-components" mode="out-in">
+            <transition name="task-components" mode="out-in">
                 <tasks-list
                     v-if="currentComponent === 'todo-list'">
                 </tasks-list>
@@ -75,19 +75,3 @@ export default {
 
 };
 </script>
-
-<style>
-.todo-components-enter-active {
-    transition: all .35s ease-out;
-}
-
-.todo-components-leave-active {
-    transition: all .15s ease-in;
-}
-
-.todo-components-enter-from,
-.todo-components-leave-to {
-    opacity: 0;
-    transform: translateY(-100px);
-}
-</style>

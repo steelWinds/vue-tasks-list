@@ -67,3 +67,14 @@
 .slide-left-move {
   transition: all .35s ease-in-out;
 }
+
+.task-components-enter-active,
+.task-components-leave-active {
+  transition: all .25s ease-out;
+}
+
+.task-components-enter-from,
+.task-components-leave-to {
+  opacity: 0;
+  transform: translateY(-100px);
+}
