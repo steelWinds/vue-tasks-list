@@ -62,7 +62,7 @@ export default {
 
     background-color: #35495e;
     color: white;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     hyphens: auto;
     text-overflow: ellipsis;
 
@@ -85,11 +85,6 @@ export default {
             }
         }
     }
-
-    @supports not (hyphens: auto) {
-        overflow-wrap: break-word;
-    }
-
 
     &__title {
         @apply w-full max-w-xs text-xl;
