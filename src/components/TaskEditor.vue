@@ -77,7 +77,7 @@
                 styleType="invalid"
                 v-else-if="postingError.status === true">
                 
-                {{ this.postingError.error.message }}
+                Task not add: Network Error
             </notification>
         </transition>
     </article>

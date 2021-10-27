@@ -16,9 +16,7 @@
                 styleType="invalid"
                 v-else-if="removingError.status === true">
 
-                Task not will remove on server: 
-                
-                {{ this.removingError.error.message }}
+                Task not will remove on server: Network Error
             </notification>
         </transition>
 
@@ -33,7 +31,7 @@
                 styleType="invalid"
                 v-if="loadingError.status === true">
 
-                {{ this.loadingError.error.message }}
+                Load error, check your network
             </message>
 
             <message
