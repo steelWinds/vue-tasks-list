@@ -148,7 +148,7 @@ export default {
                         this.setUserKey(this.userKey);
 
                         this.switchRoute('home');
-                    }, 1500);
+                    }, 1100);
                 }
             }
         );
@@ -198,6 +198,8 @@ export default {
                     target: this.regError,
                     delay: 2500
                 });
+
+                return;
             }
             
             this.$refs.regBtn.$el.blur();
