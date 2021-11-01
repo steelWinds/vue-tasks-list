@@ -18,7 +18,10 @@ export default {
     },
 
     props: {
-        styleType: String
+        styleType: {
+            type: String,
+            default: 'valid'
+        }
     },
 
     computed: {
@@ -47,8 +50,8 @@ export default {
     position: fixed;
     top: 100px;
 
-    max-width: 300px;
     padding: 1em;
+    max-width: 280px;
     border-radius: 5px;
 
     text-align: center;

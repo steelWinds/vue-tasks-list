@@ -1,9 +1,9 @@
 input.input-danger:not(:placeholder-shown) {
-  border-color: red !important;
+  border-color: #d62929 !important;
 }
 
 textarea.input-danger:not(:placeholder-shown) {
-  border-color: red !important;
+  border-color: #d62929 !important;
 }
 
 option:disabled {

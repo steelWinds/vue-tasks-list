@@ -6,25 +6,22 @@
         :style="positionType"> 
 
         <h1 class="header__title">
-            <a href="./index.html">
+            <a @click.prevent="switchRoute('home')">
                 Vue style
             </a>
         </h1>
 
-        <section 
-            class="
-                header__switch-btns">
-            
+        <section class="header__switch-btns">
             <material-button
-                @clickEvent="switchComponent(this.components.todoList)"
-                :adittClass="checkActive(this.components.todoList)">
+                @clickEvent="switchCurrentRoute('tasks-list')"
+                :adittClass="isActive('tasks-list')">
 
                 list
             </material-button>
             
             <material-button
-                @clickEvent="switchComponent(this.components.todoEditor)"
-                :adittClass="checkActive(this.components.todoEditor)">
+                @clickEvent="switchCurrentRoute('task-editor')"
+                :adittClass="isActive('task-editor')">
                 
                 write
             </material-button>
@@ -39,43 +36,55 @@ import MaterialButton from './MaterialButton.vue';
 
 export default {
     data() {
-        return {};
+        return {
+            currentRoute: 'tasks-list'
+        };
     },
+
+    inject: [
+        'switchRoute'
+    ],
 
     components: {
         MaterialButton
     },
 
-    inject: [
-        'components', 
-        'currentComponent',
-        'switchComponent'
-    ],
-
-    methods: {
-        checkActive(component) {
-            let result = this.currentComponent === component;
-
-            return {
-                ['material-button_active']: result
-            };
-        },
-    },
-
     computed: {
         positionType() {
             let styleObject = {
-                'position': ''
+                'top': ''
             };
 
-            if (this.currentComponent === this.components.todoEditor) {
+            if (this.currentRoute === 'task-editor') {
                 styleObject['top'] = 'auto';
-            } else if (this.currentComponent === this.components.todoList) {
+            } else if (this.currentRoute === 'tasks-list') {
                 styleObject['top'] = '0';
             }
 
             return styleObject;
         }
+    },
+
+    methods: {
+        isActive(routeName) {
+            let styleObject = {
+                ['material-button_active']: false
+            };
+
+            if (this.currentRoute === routeName) {
+                styleObject['material-button_active'] = true;
+
+                return styleObject;
+            }
+
+            return styleObject;
+        },
+
+        switchCurrentRoute(routeName) {
+            this.switchRoute(routeName);
+
+            this.currentRoute = routeName;
+        } 
     }
 };
 </script>
@@ -104,6 +113,8 @@ export default {
 
     &__title {
         text-transform: capitalize;
+
+        cursor: pointer;
     }
 
     &__switch-btns {

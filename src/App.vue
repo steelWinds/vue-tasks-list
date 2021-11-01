@@ -1,77 +1,61 @@
 <template>
-    <article 
-        class="
-            container
-            w-full
-            h-full
-            max-w-full
-            min-h-screen">
-
+    <article class="container">
         <header is="vue:header"></header>
 
-        <main>
-            <transition name="task-components" mode="out-in">
-                <tasks-list
-                    v-if="currentComponent === 'todo-list'">
-                </tasks-list>
-
-                <task-editor
-                    @switchHeaderPositionType="switchHeaderPositionType" 
-                    v-else-if="currentComponent === 'todo-editor'">
-                </task-editor>
-            </transition>
+        <main class="container__main">
+            <router-view></router-view>
         </main>
     </article>
 </template>
 
 <script>
-import { computed } from 'vue';
-import ScrollReveal from 'scrollreveal';
-
-import TasksList from './components/TasksList.vue';
-import TaskEditor from './components/TaskEditor.vue';
 import Header from './components/Header.vue';
 
 export default {
     data() {
-        return {
-            currentComponent: 'todo-list',
-            headerPositionType: 'sticky',
-        };
-    },
-
-    provide() {
-        return {
-            components: {
-                todoList: 'todo-list',
-                todoEditor: 'todo-editor'
-            },
-            currentComponent: computed(() => {
-                return this.currentComponent;
-            }),
-            switchComponent: this.switchComponent,
-        };
+        return {};
     },
 
     components: {
         Header,
-        TasksList,
-        TaskEditor
+    },
+
+    provide() {
+        return {
+            getUserKey: this.getUserKey,
+            setUserKey: this.setUserKey,
+            switchRoute: this.switchRoute
+        };
     },
 
     methods: {
-        switchComponent(component) {
-            this.currentComponent = component;
+        getUserKey() {
+            return window.localStorage.getItem('user-key');
         },
 
-        switchHeaderPositionType(type) {
-            if (type !== 'static' && type !== 'sticky') {
-                return;
-            }
+        setUserKey(key) {
+            window.localStorage.setItem('user-key', key);
+        },
 
-            this.headerPositionType = type;
+        switchRoute(routeName) {
+            this.startMessage = false;
+            
+            this.$router.push({
+                name: routeName
+            });
         }
-    },
-
+    }
 };
 </script>
+
+<style>
+.container {
+    @apply 
+        w-full
+        h-full
+        max-w-full
+        min-h-screen !important;
+
+    position: relative;
+}
+</style>

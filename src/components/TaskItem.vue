@@ -1,21 +1,21 @@
 <template>
-    <article class="todo-item">
+    <article class="task-item">
         <material-button
-            class="todo-item__btn"
+            class="task-item__btn"
             @clickEvent="removeTask">
             
             remove
         </material-button>
 
-        <h3 class="todo-item__title mb-1">
+        <h3 class="task-item__title mb-1">
             {{ this.title }}
         </h3>
 
-        <i class="todo-item__subtitle">
+        <i class="task-item__subtitle">
             {{ this.subtitle }}
         </i>
 
-        <p class="todo-item__content mt-3">
+        <p class="task-item__content mt-3">
             {{ this.text }}
         </p>
     </article>
@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style>
-.todo-item {
+.task-item {
     position: relative;
 
     padding: 1em;

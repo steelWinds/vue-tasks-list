@@ -1,5 +1,4 @@
 {
-  "module": true,
   "name": "vue-app",
   "version": "1.0.0",
   "private": true,
@@ -8,20 +7,26 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "module": true,
   "dependencies": {
+    "@vuelidate/core": "^2.0.0-alpha.30",
+    "@vuelidate/validators": "^2.0.0-alpha.24",
     "animejs": "^3.2.1",
     "core-js": "^3.18.2",
     "lodash": "^4.17.21",
-    "sass-loader": "^12.1.0",
+    "minima-fetch.js": "^1.0.4",
     "scrollreveal": "^4.0.9",
     "tailwindcss": "^2.2.15",
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.15.8",
+    "@babel/preset-env": "^7.15.8",
     "@tailwindcss/postcss7-compat": "^2.2.14",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "^4.5.15",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "eslint": "7.32.0",
@@ -31,6 +36,7 @@
     "postcss-mixins": "^6.2.3",
     "postcss-nested": "^4.2.3",
     "postcss-nested-props": "^2.0.0",
-    "postcss-simple-vars": "^5.0.2"
+    "postcss-simple-vars": "^5.0.2",
+    "sass-loader": "^12.3.0"
   }
 }

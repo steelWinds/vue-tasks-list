@@ -1,7 +1,6 @@
 <template>
     <article class="preloader">
-        <div class="preloader__box">
-        </div>
+        <div class="preloader__box"></div>
     </article>
 </template>
 

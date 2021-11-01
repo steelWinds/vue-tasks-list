@@ -1,8 +1,8 @@
 <template>
     <button 
+        class="material-button"
         @click.prevent="$emit('clickEvent')"
-        :class="adittClass"
-        class="material-button">
+        :class="adittClass">
         
         <slot>
             Click me
@@ -13,9 +13,7 @@
 <script>
 export default {
     data() {
-        return {
-
-        };
+        return {};
     },
 
     props: {
@@ -27,7 +25,7 @@ export default {
 
     emits: [
         'clickEvent'
-    ],
+    ]
 };
 </script>
 
@@ -45,6 +43,12 @@ export default {
     color: white;
 
     transition: all .3s ease-in-out;
+
+    &:disabled {
+        background-color: #35495e;
+        pointer-events: none;
+        cursor: default;
+    }
 
     &:nth-child(even) {
         border-left: none;

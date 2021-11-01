@@ -18,7 +18,10 @@ export default {
     },
 
     props: {
-        styleType: String
+        styleType: {
+            type: String,
+            default: 'valid'
+        }
     },
 
     computed: {

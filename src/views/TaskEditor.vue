@@ -1,14 +1,29 @@
 <template>
     <article 
-        class="
-            todo-editor">
+        class="task-editor">
 
-        <h2 class="todo-editor__title mt-2 mb-10">
+        <h2 class="task-editor__title mt-2 mb-10">
             Text Editor
         </h2>
+
+        <transition name="slide-up-right">
+            <notification
+                styleType="valid"
+                v-if="taskIsAdd.status === true">
+
+                Task added
+            </notification>
+
+            <notification
+                styleType="invalid"
+                v-else-if="postingError.status === true">
+                
+                {{ postingError.error.message }}
+            </notification>
+        </transition>
         
         <form 
-            class="todo-editor__form">
+            class="task-editor__form">
             
             <section class="flex flex-col w-full sm:w-auto">
                 <span
@@ -46,7 +61,7 @@
                 <textarea 
                     class="w-full"
                     :class="checkValid('contentModel', contentModel, 1)"
-                    name="Text of todo" 
+                    name="Text of task" 
                     placeholder="Input your text"
                     rows="10"
                     v-model="contentModel"
@@ -57,39 +72,23 @@
             </section>
 
             <material-button
-                class="todo-editor__btn"
+                class="task-editor__btn"
                 @clickEvent="addTask()"
                 ref="addBtn">
 
                 add task
             </material-button>
         </form>
-
-        <transition name="slide-up-right">
-            <notification
-                styleType="valid"
-                v-if="taskIsAdd.status === true">
-
-                Task added
-            </notification>
-
-            <notification
-                styleType="invalid"
-                v-else-if="postingError.status === true">
-                
-                Task not add: Network Error
-            </notification>
-        </transition>
     </article>
 </template>
 
 <script>
 import { computed } from 'vue';
-import { minima } from '../modules/minima.js';
+import { minima } from 'minima-fetch.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
 
-import MaterialButton from './MaterialButton.vue';
-import Notification from './Notification.vue';
+import MaterialButton from '../components/MaterialButton.vue';
+import Notification from '../components/Notification.vue';
 
 export default {
     data() {
@@ -111,9 +110,10 @@ export default {
         };
     },
 
-    emits: [
-        'switchHeaderPositionType'
-    ],
+    components: {
+        MaterialButton,
+        Notification
+    },
 
     computed: {
         taskObject() {
@@ -123,19 +123,6 @@ export default {
                 text: this.contentModel
             };
         }
-    },
-
-    components: {
-        MaterialButton,
-        Notification
-    },
-
-    mounted() {
-        this.$emit('switchHeaderPositionType', 'static');
-    },
-
-    unmounted() {
-        this.$emit('switchHeaderPositionType', 'sticky');
     },
     
     methods: {
@@ -190,14 +177,16 @@ export default {
             let postTask = null;
 
             try {
-                postTask = await minima({
-                    url: 'https://mtasks.herokuapp.com/tasks/',
-                    method: 'POST',
-                    body: JSON.stringify(this.taskObject),
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8'
+                postTask = await minima(
+                    'https://mtasks.herokuapp.com/tasks/',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(this.taskObject),
+                        headers: {
+                            'Content-Type': 'application/json;charset=utf-8'
+                        }
                     }
-                });
+                );
             } catch(err) {
                 this.postingError.error = err;
 
@@ -221,7 +210,7 @@ export default {
 </script>
 
 <style>
-.todo-editor {
+.task-editor {
     @apply 
         w-full
         flex
@@ -249,7 +238,7 @@ export default {
         & input, textarea {
             transition: all .3s ease-in-out;
 
-            &:active, &:focus {
+            &:focus {
                 outline: none;
                 border-radius: 5px !important;
                 border-style: dashed;

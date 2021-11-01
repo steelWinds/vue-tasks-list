@@ -1,6 +1,8 @@
 <template>
-    <article class="todo-list">
-        <h2 class="todo-list__title mt-2 mb-10">Tasks List</h2>
+    <article class="tasks-list">
+        <material-title class="self-center">
+            tasks list
+        </material-title>
 
         <transition name="slide-up-right">
             <notification 
@@ -16,7 +18,8 @@
                 styleType="invalid"
                 v-else-if="removingError.status === true">
 
-                Task not will remove on server: Network Error
+                Task not will remove on server: 
+                {{ removingError.error.message }}
             </notification>
         </transition>
 
@@ -31,7 +34,7 @@
                 styleType="invalid"
                 v-if="loadingError.status === true">
 
-                Load error, check your network
+                Load error: {{ loadingError.error.message }}
             </message>
 
             <message
@@ -48,7 +51,7 @@
             </preloader>
 
             <section 
-                class="todo-list__items"
+                class="tasks-list__items"
                 v-else>
                 
                 <transition-group 
@@ -69,16 +72,16 @@
 </template>
 
 <script>
-import { minima } from '../modules/minima.js';
-import ScrollReveal from 'scrollreveal';
+import { minima } from 'minima-fetch.js';
 import { blockCall } from '../modules/blockCall.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
 import { cutByLength } from '../modules/cutByLength.js';
 
-import TaskItem from './TaskItem.vue';
-import Preloader from './Preloader.vue';
-import Message from './Message.vue';
-import Notification from './Notification.vue';
+import TaskItem from '../components/TaskItem.vue';
+import Preloader from '../components/Preloader.vue';
+import Message from '../components/Message.vue';
+import Notification from '../components/Notification.vue';
+import MaterialTitle from '../components/MaterialTitle.vue';
 
 export default {
     data() {
@@ -105,7 +108,8 @@ export default {
         TaskItem,
         Preloader,
         Message,
-        Notification
+        Notification,
+        MaterialTitle
     },
 
     mounted() {
@@ -115,10 +119,12 @@ export default {
     methods: {
         async removeTask(key) {
             try {
-                let deleteTask = await minima({
-                    url: `https://mtasks.herokuapp.com/tasks/${key}/`,
-                    method: 'DELETE'
-                });    
+                let deleteTask = await minima(
+                    `https://mtasks.herokuapp.com/tasks/${key}/`,
+                    {
+                        method: 'DELETE'
+                    }
+                );    
             } catch(err) {
                 this.removingError.error = err;
 
@@ -144,41 +150,43 @@ export default {
             let tasksList = null;
 
             try {
-                tasksList = await minima({
-                    url: 'https://mtasks.herokuapp.com/tasks/',
-                    json: true
-                }); 
+                tasksList = await minima(
+                    'https://mtasks.herokuapp.com/tasks/',
+                    {
+                        json: true
+                    }
+                ); 
             } catch(err) {
-                this.loadingError = {
+                return this.loadingError = {
                     status: true,
                     error: err
                 };
-
-                return;
             }
 
             this.tasksList = tasksList;
         },
 
-        addRevealOnList(sync) {
-            if (sync === true) {
-                return ScrollReveal().sync();
-            }
+        // TODO: add scrollReveal
 
-            ScrollReveal({
-                duration: 350,
-                distance: '30px',
-                opacity: .5,
-                scale: .9,
-            }).reveal('.todo-item');
-        }
+        //addRevealOnList(sync) {
+        //    if (sync === true) {
+        //        return ScrollReveal().sync();
+        //    }
+
+        //    ScrollReveal({
+        //        duration: 350,
+        //        distance: '30px',
+        //        opacity: .5,
+        //        scale: .9,
+        //    }).reveal('.todo-item');
+        //}
             
     }
 };
 </script>
 
 <style>
-.todo-list {
+.tasks-list {
     @apply 
         flex
         flex-col
@@ -189,11 +197,6 @@ export default {
 
     padding: 0 1em;
     padding-bottom: 1em;
-
-    &__title {
-        align-self: center;
-        color: #35495e;
-    }
 
     &__items {
         @apply space-y-4;
