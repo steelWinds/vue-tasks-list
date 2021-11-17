@@ -36,7 +36,6 @@
     "postcss-mixins": "^6.2.3",
     "postcss-nested": "^4.2.3",
     "postcss-nested-props": "^2.0.0",
-    "postcss-simple-vars": "^5.0.2",
     "sass-loader": "^12.3.0"
   }
 }
