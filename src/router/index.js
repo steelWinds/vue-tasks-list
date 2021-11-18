@@ -1,34 +1,45 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
+import { checkAuthKey } from '../modules/checkAuthKey.js';
 
 import TasksList from '../views/TasksList.vue';
 import TaskEditor from '../views/TaskEditor.vue';
 import Registration from '../views/Registration.vue';
 import Authorization from '../views/Authorization.vue';
 import Home from '../views/Home.vue';
+import UnavailableURL from '../views/UnavailableURL.vue';
+
 
 const routes = [
     {
         path: '/',
-        redirect: '/home'
-    },
-
-    {
-        path: '/home',
+        alias: '/home',
         name: 'home',
         component: Home,
+        beforeEnter: () => {
+            if (checkAuthKey('auth-key', true) === true) {
+                return {name: 'tasks-list'};
+            }
+
+            return true;
+        }
     },
 
     {
         path: '/list',
         name: 'tasks-list',
-        component: TasksList
+        component: TasksList,
+        beforeEnter: () => {
+            return checkAuthKey('auth-key', false);
+        }
     },
 
     {
         path: '/editor',
         name: 'task-editor',
-        component: TaskEditor
+        component: TaskEditor,
+        beforeEnter: () => {
+            return checkAuthKey('auth-key', false);
+        }
     },
 
     {
@@ -41,6 +52,11 @@ const routes = [
         path: '/authorization',
         name: 'authorization',
         component: Authorization
+    },
+
+    {
+        path: '/:pathMatch(.*)*', 
+        component: UnavailableURL
     }
 ];
 
