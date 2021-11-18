@@ -4,12 +4,19 @@
             user registration
         </material-title>
 
-        <transition name="slide-up-right">
+        <transition name="slide-up-right" mode="out-in">
             <notification
                 styleType="invalid"
                 v-if="regError.status === true">
 
                 {{ regError.error.message }}
+            </notification>
+
+            <notification
+                styleType="valid"
+                v-else-if="requestProcess">
+
+                Login is process, please wait
             </notification>
 
             <notification
@@ -28,8 +35,8 @@
                 class="registration__input"
                 placeholder="Input your email"
                 required
-                :class="isInvalidStyle(v$.reg.email.$invalid)"
-                :invalid="v$.reg.email.$invalid"
+                :class="isInvalidStyle(v$.reg.email.$error)"
+                :invalid="v$.reg.email.$error"
                 invalidMessage="Email is incorrect"
                 v-model="reg.email"
                 inputType="email"
@@ -40,11 +47,10 @@
                 placeholder="Input your password"
                 class="registration__input"
                 required
-                :class="isInvalidStyle(v$.reg.password.$invalid)"
-                :invalid="v$.reg.password.$invalid"
-                invalidMessage="Password should 
-                                include itself not min 
-                                10 symbols"
+                :class="isInvalidStyle(v$.reg.password.$error)"
+                :invalid="v$.reg.password.$error"
+                invalidMessage="Password very short or
+                                not enough unique"
                 v-model="reg.password"
                 :switchVisible="true">
             </custom-input>
@@ -53,31 +59,38 @@
                 placeholder="Confirm your password"
                 class="registration__input"
                 required
-                :class="isInvalidStyle(v$.reg.confirmPassword.$invalid)"
-                :invalid="v$.reg.confirmPassword.$invalid"
+                :class="isInvalidStyle(v$.reg.confirmPassword.$error)"
+                :invalid="v$.reg.confirmPassword.$error"
                 invalidMessage="Password is not same"
                 v-model="reg.confirmPassword"
-                :switchVisible="false">
+                :switchVisible="true">
             </custom-input>
 
             <material-button 
                 class="registration__btn"
                 ref="regBtn"
-                :disabled="v$.reg.$invalid"
-                @clickEvent="registration()">
+                @clickEvent="checkValid(registration)">
                 
                 Registration
             </material-button>
+
+            <material-link
+                @click="switchRoute('authorization')">
+
+                Are you register? Go login
+            </material-link>
         </form>
     </article>
 </template>
 
 <script>
 import { email, required, minLength, sameAs } from '@vuelidate/validators';
-import useVuelidate from '@vuelidate/core';
+import { password } from '../validators/password.js';
+import { useVuelidate } from '@vuelidate/core';
 import { minima } from 'minima-fetch.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
 
+import MaterialLink from '../components/MaterialLink.vue';
 import Notification from '../components/Notification.vue';
 import CustomInput from '../components/CustomInput.vue';
 import MaterialButton from '../components/MaterialButton.vue';
@@ -98,20 +111,24 @@ export default {
             regIsDone: {
                 status: false
             },
-            userKey: null
+            authKey: null,
+            requestProcess: false
         };
     },
 
     inject: [
-        'setUserKey',
+        'setAuthKey',
         'switchRoute',
+        'logoutAccess',
+        'setLogoutAccess'
     ],
 
     components: {
         CustomInput,
         MaterialButton,
         MaterialTitle,
-        Notification
+        Notification,
+        MaterialLink
     },
 
     setup() {
@@ -125,15 +142,19 @@ export default {
             reg: {
                 email: { 
                     email: email, 
-                    required: required
+                    required: required,
+                    $lazy: true
                 },
                 password: {
                     required: required,
-                    minLength: minLength(10)
+                    minLength: minLength(10),
+                    password: password,
+                    $lazy: true
                 },
                 confirmPassword: {
                     required: required,
-                    sameAsPassword: sameAs(this.reg.password)
+                    sameAsPassword: sameAs(this.reg.password),
+                    $lazy: true
                 }
             }
         };
@@ -145,10 +166,12 @@ export default {
             (newValue) => {
                 if (newValue === true) {
                     setTimeout(() => {
-                        this.setUserKey(this.userKey);
+                        this.setAuthKey(this.authKey);
 
                         this.switchRoute('home');
-                    }, 1100);
+
+                        this.setLogoutAccess(true);
+                    }, 1500);
                 }
             }
         );
@@ -175,9 +198,23 @@ export default {
             return classObject;
         },
 
+        async checkValid(callback) {
+            let valid = await this.v$.$validate();
+
+            if (valid === false) {
+                this.$refs.regBtn.$el.blur();
+
+                return;
+            }
+
+            callback();
+        },
+
         async registration() {
+            this.requestProcess = true;
+
             try {
-                this.userKey = await minima(
+                this.authKey = await minima(
                     'https://mtasks.herokuapp.com/auth/registration/',
                     {
                         method: 'POST',
@@ -186,10 +223,14 @@ export default {
                             'Content-Type': 'application/json;charset=utf-8'
                         },
                         json: true,
-                        errorType: 'email'
+                        errorTypes: ['email', 'non_field_errors']
                     }
                 );
+
+                this.authKey = this.authKey.data.key;
             } catch(err) {
+                this.requestProcess = false;
+
                 this.regError.error = err;
                 
                 this.$refs.regBtn.$el.blur();
@@ -201,6 +242,8 @@ export default {
 
                 return;
             }
+
+            this.requestProcess = false;
             
             this.$refs.regBtn.$el.blur();
 
@@ -213,7 +256,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .registration {
     @apply
         w-full
@@ -247,13 +290,13 @@ export default {
             left: none !important;
         }
         
-        background-color: #42b883;
+        background-color: var(--color-green);
 
         &:focus, &:active {
-            border-bottom-color: #42b883;
+            border-bottom-color: var(--color-green);
 
             background-color: white;
-            color: #42b883;
+            color: var(--color-green);
         }
     }
 }
