@@ -11,19 +11,40 @@
             </a>
         </h1>
 
-        <section class="header__switch-btns">
-            <material-button
-                @clickEvent="switchCurrentRoute('tasks-list')"
-                :adittClass="isActive('tasks-list')">
-
-                list
-            </material-button>
-            
-            <material-button
-                @clickEvent="switchCurrentRoute('task-editor')"
-                :adittClass="isActive('task-editor')">
+        <section
+            v-if="logoutAccess" 
+            class="
+                flex
+                flex-col 
+                md:flex-row 
+                md:flex-wrap 
+                items-center
+                md:justify-end">
+           
+            <section 
+                class="header__switch-btns flex-shrink-0">
                 
-                write
+                <material-button
+                    @clickEvent="switchCurrentRoute('tasks-list')"
+                    :adittClass="isActive('tasks-list')">
+
+                    list
+                </material-button>
+                
+                <material-button
+                    @clickEvent="switchCurrentRoute('task-editor')"
+                    :adittClass="isActive('task-editor')">
+                    
+                    write
+                </material-button>
+            </section>
+
+            <material-button
+                class="mt-5 md:ml-10 md:mt-0 header__logoutBtn"
+                v-if="logoutAccess === true"
+                @click="logout()">
+                
+                logout
             </material-button>
         </section>
     </header>
@@ -32,21 +53,30 @@
 </template>
 
 <script>
+import { checkAuthKey } from '../modules/checkAuthKey.js';
+
 import MaterialButton from './MaterialButton.vue';
 
 export default {
     data() {
         return {
-            currentRoute: 'tasks-list'
+            currentRoute: 'tasks-list',
         };
     },
 
     inject: [
-        'switchRoute'
+        'switchRoute',
+        'logoutAccess',
+        'removeAuthKey',
+        'setLogoutAccess',
     ],
 
     components: {
         MaterialButton
+    },
+
+    created() {
+        this.setLogoutAccess(checkAuthKey('auth-key', true));
     },
 
     computed: {
@@ -59,6 +89,10 @@ export default {
                 styleObject['top'] = 'auto';
             } else if (this.currentRoute === 'tasks-list') {
                 styleObject['top'] = '0';
+            }
+
+            if (this.logoutAccess === false) {
+                styleObject['justify-content'] = 'center';
             }
 
             return styleObject;
@@ -84,12 +118,20 @@ export default {
             this.switchRoute(routeName);
 
             this.currentRoute = routeName;
-        } 
-    }
+        },
+
+        logout() {
+            this.removeAuthKey();
+
+            this.setLogoutAccess(false);
+
+            this.switchRoute('home');
+        },
+    },
 };
 </script>
 
-<style>
+<style lang="postcss">
 .header {
     @apply 
         flex
@@ -105,12 +147,12 @@ export default {
 
     padding: 1em 2em;
 
-    background-color: #42b883;
+    background-color: var(--color-green);
     text-align: center;
     color: white;
 
     z-index: 100;
-
+    
     &__title {
         text-transform: capitalize;
 
@@ -119,8 +161,7 @@ export default {
 
     &__switch-btns {
         display: flex;
-        width: 100%;
-        max-width: 250px;
+        width: 250px;
         
         & > * {
             flex: 1 0 50%;
@@ -135,7 +176,17 @@ export default {
                 border-bottom-right-radius: 5px;
             }
         }
+    }
 
+    &__logoutBtn {
+        border: .1em solid transparent !important;
+        background-color: var(--color-gray);
+
+        &:hover, &:active {
+            border-color: white !important;
+
+            background-color: var(--color-green);
+        }
     }
 }
 </style>

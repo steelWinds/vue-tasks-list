@@ -42,17 +42,17 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .error-message {
     @apply 
         w-full
         max-w-sm; 
 
     padding: .5em 1.5em;
-    border-color: #d62929 !important; 
+    border-color: var(--color-red) !important; 
 
     color: white;
     text-align: center;
-    background-color: #d62929; 
+    background-color: var(--color-red); 
 }
 </style>
