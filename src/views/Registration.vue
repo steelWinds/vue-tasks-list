@@ -29,7 +29,8 @@
 
         <form 
             class="registration__form"
-            @click.prevent>
+            @click.prevent
+            @keyup.prevent.enter="checkValid(registration)">
 
             <custom-input
                 class="registration__input"
@@ -234,6 +235,8 @@ export default {
                 this.regError.error = err;
                 
                 this.$refs.regBtn.$el.blur();
+
+                console.log(err);
 
                 switchThroughTime({
                     target: this.regError,
