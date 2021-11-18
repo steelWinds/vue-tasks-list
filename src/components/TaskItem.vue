@@ -61,7 +61,7 @@ export default {
     border-radius: 5px;
 
     background-color: var(--color-gray);
-    color: white;
+    color: rgb(243, 197, 197);
     overflow-wrap: anywhere;
     hyphens: auto;
     text-overflow: ellipsis;
