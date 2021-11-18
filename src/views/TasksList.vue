@@ -104,6 +104,10 @@ export default {
         };
     },
 
+    inject: [
+        'getAuthKey'
+    ],
+
     components: {
         TaskItem,
         Preloader,
@@ -112,7 +116,7 @@ export default {
         MaterialTitle
     },
 
-    mounted() {
+    created() {
         this.getTasksList();
     },
 
@@ -122,7 +126,10 @@ export default {
                 let deleteTask = await minima(
                     `https://mtasks.herokuapp.com/tasks/${key}/`,
                     {
-                        method: 'DELETE'
+                        method: 'DELETE',
+                        headers: {
+                            Authorization: `Token ${this.getAuthKey()}`
+                        }
                     }
                 );    
             } catch(err) {
@@ -153,7 +160,10 @@ export default {
                 tasksList = await minima(
                     'https://mtasks.herokuapp.com/tasks/',
                     {
-                        json: true
+                        json: true,
+                        headers: {
+                            Authorization: `Token ${this.getAuthKey()}`
+                        }
                     }
                 ); 
             } catch(err) {
@@ -163,7 +173,7 @@ export default {
                 };
             }
 
-            this.tasksList = tasksList;
+            this.tasksList = tasksList.data;
         },
 
         // TODO: add scrollReveal
@@ -185,11 +195,12 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .tasks-list {
     @apply 
         flex
         flex-col
+        w-full
         h-full
         min-h-screen;
     
