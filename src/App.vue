@@ -9,11 +9,15 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
 import Header from './components/Header.vue';
 
 export default {
     data() {
-        return {};
+        return {
+            authorization: false
+        };
     },
 
     components: {
@@ -22,19 +26,32 @@ export default {
 
     provide() {
         return {
-            getUserKey: this.getUserKey,
-            setUserKey: this.setUserKey,
-            switchRoute: this.switchRoute
+            getAuthKey: this.getAuthKey,
+            setAuthKey: this.setAuthKey,
+            switchRoute: this.switchRoute,
+            removeAuthKey: this.removeAuthKey,
+            logoutAccess: computed(() => {
+                return this.authorization;
+            }),
+            setLogoutAccess: this.setLogoutAccess
         };
     },
 
     methods: {
-        getUserKey() {
-            return window.localStorage.getItem('user-key');
+        getAuthKey() {
+            return window.localStorage.getItem('auth-key');
         },
 
-        setUserKey(key) {
-            window.localStorage.setItem('user-key', key);
+        setAuthKey(key) {
+            window.localStorage.setItem('auth-key', key);
+        },
+
+        removeAuthKey() {
+            window.localStorage.removeItem('auth-key');
+        },
+
+        setLogoutAccess(value) {
+            this.authorization = value;
         },
 
         switchRoute(routeName) {
@@ -48,7 +65,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .container {
     @apply 
         w-full
@@ -57,5 +74,9 @@ export default {
         min-h-screen !important;
 
     position: relative;
+
+    &__main {
+        @apply flex flex-col items-center;
+    }
 }
 </style>
