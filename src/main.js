@@ -8,8 +8,9 @@ import './assets/css/tailwindcss.css';
 import './assets/css/myNormalize.css';
 import './assets/css/vueAnimations.css';
 
-let app = createApp(App).use(router);
+let app = createApp(App);
 
+app.use(router);
 app.config.unwrapInjectedRef = true;
 
 app.mount('#app');
