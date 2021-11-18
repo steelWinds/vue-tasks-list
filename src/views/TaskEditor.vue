@@ -2,9 +2,9 @@
     <article 
         class="task-editor">
 
-        <h2 class="task-editor__title mt-2 mb-10">
+        <material-title class="self-center">
             Text Editor
-        </h2>
+        </material-title>
 
         <transition name="slide-up-right">
             <notification
@@ -12,6 +12,13 @@
                 v-if="taskIsAdd.status === true">
 
                 Task added
+            </notification>
+            
+            <notification
+                styleType="valid"
+                v-else-if="requestProcess">
+
+                Add task is process, please wait
             </notification>
 
             <notification
@@ -23,7 +30,9 @@
         </transition>
         
         <form 
-            class="task-editor__form">
+            class="task-editor__form"
+            @click.prevent
+            @keyup.prevent.enter="addTask()">
             
             <section class="flex flex-col w-full sm:w-auto">
                 <span
@@ -65,7 +74,6 @@
                     placeholder="Input your text"
                     rows="10"
                     v-model="contentModel"
-                    @keydown.ctrl.enter.exact="addTask()"
                     @keydown.tab.prevent="tabSize(
                         $event, 'contentModel'
                     )"></textarea>
@@ -88,6 +96,7 @@ import { minima } from 'minima-fetch.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
 
 import MaterialButton from '../components/MaterialButton.vue';
+import MaterialTitle from '../components/MaterialTitle.vue';
 import Notification from '../components/Notification.vue';
 
 export default {
@@ -96,6 +105,7 @@ export default {
             titleModel: '',
             subtitleModel: '',
             contentModel: '',
+            requestProcess: false,
             invalids: {
                 write: false,
                 list: new Map()
@@ -110,8 +120,13 @@ export default {
         };
     },
 
+    inject: [
+        'getAuthKey'
+    ],
+
     components: {
         MaterialButton,
+        MaterialTitle,
         Notification
     },
 
@@ -164,6 +179,8 @@ export default {
         },
 
         async addTask() { 
+            this.requestProcess = true;
+
             if (this.checkValid('titleModel', this.titleModel, 1) 
                 || this.checkValid('subtitleModel', this.subtitleModel, 1)  
                 || this.checkValid('contentModel', this.contentModel, 1)) {
@@ -183,11 +200,14 @@ export default {
                         method: 'POST',
                         body: JSON.stringify(this.taskObject),
                         headers: {
-                            'Content-Type': 'application/json;charset=utf-8'
+                            'Content-Type': 'application/json;charset=utf-8',
+                            Authorization: `Token ${this.getAuthKey()}`
                         }
                     }
                 );
             } catch(err) {
+                this.requestProcess = false;
+
                 this.postingError.error = err;
 
                 this.$refs.addBtn.$el.blur();
@@ -197,6 +217,8 @@ export default {
                     delay: 1000
                 });
             }
+
+            this.requestProcess = false;
 
             this.$refs.addBtn.$el.blur();
 
@@ -209,7 +231,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .task-editor {
     @apply 
         w-full
@@ -220,10 +242,6 @@ export default {
 
     padding: 0 1em;
     padding-bottom: 1em;
-
-    &__title {
-        color: #35495e;
-    }
 
     &__form {
         @apply 
@@ -247,12 +265,12 @@ export default {
 
         & input {
             padding: .7em;
-            border: .15em solid #42b883;
+            border: .15em solid var(--color-green);
         }
 
         & textarea {
             padding: .7em;
-            border: .15em solid #42b883;
+            border: .15em solid var(--color-green);
         }
     }
 
@@ -262,13 +280,13 @@ export default {
             left: none !important;
         }
         
-        background-color: #42b883;
+        background-color: var(--color-green);
 
         &:focus, &:active {
-            border-bottom-color: #42b883;
+            border-bottom-color: var(--color-green);
 
             background-color: white;
-            color: #42b883;
+            color: var(--color-green);
         }
     }
 }
