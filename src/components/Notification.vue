@@ -42,7 +42,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .task-notification {
     @apply 
         w-full;
@@ -55,8 +55,8 @@ export default {
     border-radius: 5px;
 
     text-align: center;
-    background-color: #42b883;
-    color: #ffffff;
+    background-color: var(--color-green);
+    color: white;
 
     z-index: 100;
 

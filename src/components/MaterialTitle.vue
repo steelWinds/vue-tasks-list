@@ -14,11 +14,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .material-title {
     @apply mt-2 mb-10;
 
-    color: #35495e;
+    color: var(--color-gray);
     text-transform: capitalize;
 }
 </style>

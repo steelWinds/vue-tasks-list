@@ -29,7 +29,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .material-button {
     position: relative;
 
@@ -37,7 +37,7 @@ export default {
     border: .15em solid transparent;
     border-right: none;
 
-    background-color: #35495e;
+    background-color: var(--color-gray);
     text-transform: uppercase;
     font-weight: 300;
     color: white;
@@ -45,7 +45,7 @@ export default {
     transition: all .3s ease-in-out;
 
     &:disabled {
-        background-color: #35495e;
+        background-color: var(--color-gray);
         pointer-events: none;
         cursor: default;
     }
@@ -69,7 +69,7 @@ export default {
     }
 
     &_active {
-        background-color: #42b883;
+        background-color: var(--color-green);
         border: {
             top: .15em solid white;
             bottom: .15em solid white;

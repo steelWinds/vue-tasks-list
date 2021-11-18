@@ -12,7 +12,7 @@ export default {
 };  
 </script>
 
-<style>
+<style lang="postcss">
 @keyframes bubble {
     from {
         transform: scale(1);
@@ -36,14 +36,14 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: .15em solid #42b883;
+    border: .15em solid var(--color-green);
 
     &__box {
         width: inherit;
         height: inherit;
         border-radius: inherit;
 
-        background-color: #42b883;
+        background-color: var(--color-green);
 
         animation: bubble 1s infinite;
         perpsective: 1000px;

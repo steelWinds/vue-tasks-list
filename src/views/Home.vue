@@ -34,12 +34,12 @@ export default {
     },
 
     inject: [
-        'getUserKey',
+        'getAuthKey',
         'switchRoute'
     ],
     
     mounted() {
-        if (this.getUserKey() !== null) {
+        if (this.getAuthKey() !== null) {
             this.switchRoute('tasks-list');
         }
 
@@ -48,7 +48,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .home {
     @apply 
         flex
@@ -60,6 +60,7 @@ export default {
 
     &__title {
         text-align: center;
+        color: var(--color-gray);
     }
 
     &__btn {
@@ -70,17 +71,17 @@ export default {
             left: none !important;
         }
         
-        background-color: #42b883;
+        background-color: var(--color-green);
 
         &:after {
             content: none !important;
         }
 
         &:focus, &:active {
-            border-bottom-color: #42b883;
+            border-bottom-color: var(--color-green);
 
             background-color: white;
-            color: #42b883;
+            color: var(--color-green);
         }
     }
 }

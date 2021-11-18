@@ -53,14 +53,14 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss">
 .task-item {
     position: relative;
 
     padding: 1em;
     border-radius: 5px;
 
-    background-color: #35495e;
+    background-color: var(--color-gray);
     color: white;
     overflow-wrap: anywhere;
     hyphens: auto;
@@ -142,10 +142,10 @@ export default {
         }
 
         &:hover {
-            border-bottom-color: #42b883;
+            border-bottom-color: var(--color-green);
 
             background-color: transparent;
-            color: #42b883;
+            color: var(--color-green);
         }
     }
 }

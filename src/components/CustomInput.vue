@@ -16,7 +16,8 @@
                 :type="
                     inputType === 'password' 
                     ? currentInputType
-                    : inputType">
+                    : inputType"
+                @keydown.enter.prevent>
 
             <button
                 class="custom-input__btn"
@@ -113,12 +114,16 @@ export default {
     methods: {
         switchInputVisible() {
             this.visible = !this.visible;
+        },
+
+        al() {
+            alert(1);
         }
     }
 };
 </script>
 
-<style>
+<style lang="postcss">
 .custom-input {
     &_input-padding {
         padding-right: 55px;
@@ -137,7 +142,7 @@ export default {
             w-full;
 
         padding: .5em;
-        border: .15em solid #42b883;
+        border: .15em solid var(--color-green);
 
         transition: all .35s ease-in-out;
 
