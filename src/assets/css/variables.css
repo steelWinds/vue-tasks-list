@@ -1,3 +1,5 @@
-$green: #42b883;
-$gray: #35495e;
-$red: #d62929; 
+:root {
+  --color-red: #d62929;
+  --color-gray: #35495e;
+  --color-green: #42b883;
+}
