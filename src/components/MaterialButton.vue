@@ -58,14 +58,16 @@ export default {
     &:not(:last-child):after {
             position: absolute;
             right: 0;
-            top: 0;
+            top: 50%;
 
             content: '';
 
-            height: 100%;
+            height: calc(100% + .25em);
             width: 2px;
 
             background-color: white;
+
+            transform: translateY(-50%);
     }
 
     &_active {
