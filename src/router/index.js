@@ -7,7 +7,7 @@ import Registration from '../views/Registration.vue';
 import Authorization from '../views/Authorization.vue';
 import Home from '../views/Home.vue';
 import UnavailableURL from '../views/UnavailableURL.vue';
-
+import Task from '../views/Task.vue';
 
 const routes = [
     {
@@ -57,6 +57,14 @@ const routes = [
     {
         path: '/:pathMatch(.*)*', 
         component: UnavailableURL
+    },
+
+    {
+        path: '/task/:pk',
+        alias: '/:pk',
+        props: true,
+        name: 'task',
+        component: Task
     }
 ];
 
