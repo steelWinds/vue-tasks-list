@@ -1,7 +1,6 @@
 <template>
     <button 
         class="material-button"
-        @click.prevent="$emit('clickEvent')"
         :class="adittClass">
         
         <slot>
@@ -21,11 +20,7 @@ export default {
             type: Object,
             default: null
         }
-    },
-
-    emits: [
-        'clickEvent'
-    ]
+    }
 };
 </script>
 

@@ -16,7 +16,7 @@
                 styleType="valid"
                 v-else-if="requestProcess">
 
-                Login is process, please wait
+                Registration is process, please wait
             </notification>
 
             <notification
@@ -70,7 +70,7 @@
             <material-button 
                 class="registration__btn"
                 ref="regBtn"
-                @clickEvent="checkValid(registration)">
+                @click="checkValid(registration)">
                 
                 Registration
             </material-button>

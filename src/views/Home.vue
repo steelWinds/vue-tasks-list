@@ -5,19 +5,29 @@
             or authorization, if you was have account
         </h3>
 
-        <material-button 
-            class="home__btn self-center mb-2"
-            @click="switchRoute('registration')">
+        <section
+            class="
+                flex 
+                justify-center 
+                items-center
+                gap-2 
+                flex-col 
+                sm:flex-row">
+            
+            <material-button 
+                class="home__btn self-center"
+                @click="switchRoute('registration')">
 
-            Registration
-        </material-button>
+                Registration
+            </material-button>
 
-        <material-button 
-            class="home__btn self-center"
-            @click="switchRoute('authorization')">
+            <material-button 
+                class="home__btn self-center"
+                @click="switchRoute('authorization')">
 
-            Authorization
-        </material-button>
+                Authorization
+            </material-button>
+        </section>
     </article>
 </template>
 
@@ -53,12 +63,19 @@ export default {
     @apply 
         flex
         flex-col
+        items-center
         w-full
         max-w-full !important;
 
     position: relative;
 
     &__title {
+        @apply 
+            w-full 
+            max-w-xl;
+
+        padding: 0 1em;
+
         text-align: center;
         color: var(--color-gray);
     }

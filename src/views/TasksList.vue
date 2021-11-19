@@ -46,7 +46,7 @@
             </message>
 
             <preloader
-                class="todo-list__preloader self-center"
+                class="self-center"
                 v-else-if="tasksList.length === null">
             </preloader>
 
@@ -59,7 +59,11 @@
                     
                     <task-item
                         v-for="(task, index) of tasksList"
-                        v-bind="task"
+                        :title="task.title"
+                        :subtitle="task.subtitle"
+                        :text="task.text"
+                        :pk="task.pk"
+                        :date="task.pub_datetime"
                         :key="task"    
                         @removeTaskInServer="removeTask(task.pk)"
                         @removeLocaleTask="
@@ -174,6 +178,8 @@ export default {
             }
 
             this.tasksList = tasksList.data;
+
+            console.log(this.tasksList);
         },
 
         // TODO: add scrollReveal

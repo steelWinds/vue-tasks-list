@@ -81,7 +81,7 @@
 
             <material-button
                 class="task-editor__btn"
-                @clickEvent="addTask()"
+                @click="addTask()"
                 ref="addBtn">
 
                 add task
@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import { computed } from 'vue';
 import { minima } from 'minima-fetch.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
 

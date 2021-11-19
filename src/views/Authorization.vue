@@ -137,7 +137,7 @@ export default {
         MaterialButton,
         MaterialTitle,
         Notification,
-        MaterialLink
+        MaterialLink,
     },
 
     mounted() {

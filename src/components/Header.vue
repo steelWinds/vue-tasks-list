@@ -6,7 +6,7 @@
         :style="positionType"> 
 
         <h1 class="header__title">
-            <a @click.prevent="switchRoute('home')">
+            <a @click.prevent="switchCurrentRoute('tasks-list')">
                 Vue style
             </a>
         </h1>
@@ -25,14 +25,14 @@
                 class="header__switch-btns flex-shrink-0">
                 
                 <material-button
-                    @clickEvent="switchCurrentRoute('tasks-list')"
+                    @click="switchCurrentRoute('tasks-list')"
                     :adittClass="isActive('tasks-list')">
 
                     list
                 </material-button>
                 
                 <material-button
-                    @clickEvent="switchCurrentRoute('task-editor')"
+                    @click="switchCurrentRoute('task-editor')"
                     :adittClass="isActive('task-editor')">
                     
                     write

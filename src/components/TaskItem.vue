@@ -1,19 +1,50 @@
 <template>
     <article class="task-item">
-        <material-button
-            class="task-item__btn"
-            @clickEvent="removeTask">
+        <section
+            class="
+                task-item__btns-list">
             
-            remove
-        </material-button>
+            <material-button
+                class="task-item__btn"
+                @click="removeTask">
+                
+                remove
+            </material-button>
+
+            <material-button
+                class="task-item__btn"
+                @click="switchRoute(
+                    'task',
+                    {
+                        pk: this.pk
+                    }
+                )">
+                
+                show full
+            </material-button>
+        </section>
 
         <h3 class="task-item__title mb-1">
             {{ this.title }}
         </h3>
 
-        <i class="task-item__subtitle">
+        <i class="task-item__subtitle mb-1">
             {{ this.subtitle }}
         </i>
+
+        <span 
+            class="
+                inline-flex
+                items-center
+                self-start
+                gap-2
+                mb-2">
+            
+            <strong class="text-white flex-shrink-0">
+                Created Time:
+            </strong>
+            <time class="task-item__time">{{ this.createdDate }}</time>
+        </span>
 
         <p class="task-item__content mt-3">
             {{ this.text }}
@@ -22,6 +53,8 @@
 </template>
 
 <script>
+import { minima } from 'minima-fetch.js';
+
 import MaterialButton from './MaterialButton.vue';
 
 export default {
@@ -29,10 +62,16 @@ export default {
         return {};
     },
 
+    inject: [
+        'switchRoute'
+    ],
+
     props: {
         title: String,
         subtitle: String,
         text: String,
+        pk: String,
+        date: String
     },
 
     emits: [
@@ -44,17 +83,28 @@ export default {
         MaterialButton
     },
 
+    computed: {
+        createdDate() {
+            return new Date(this.date).toLocaleString();
+        }
+    },
+
     methods: {
         removeTask() {
             this.$emit('removeLocaleTask');
             this.$emit('removeTaskInServer');
-        }
+        },
     }
 };
 </script>
 
 <style lang="postcss">
 .task-item {
+    @apply 
+        flex
+        flex-col
+        items-start;
+
     position: relative;
 
     padding: 1em;
@@ -71,12 +121,7 @@ export default {
 
     @media(max-width: 640px) {
         & {
-            @apply 
-                flex
-                flex-col
-                items-start;
-
-            &__btn {
+            &__btns-list {
                 @apply mb-5;
 
                 position: static !important;
@@ -107,6 +152,8 @@ export default {
     &__content {
         position: relative;
 
+        align-self: stretch;
+
         text-align: left !important;
         white-space: pre-wrap;
 
@@ -125,11 +172,25 @@ export default {
         }
     }
 
-    &__btn {
+    &__time {
+        padding: 0 .5em;
+
+        color: white;
+        background-color: var(--color-green);
+    }
+
+    &__btns-list {
+        @apply
+            flex
+            flex-row
+            gap-2;
+
         position: absolute;
         top: 1em;
         right: 1em;
+    }
 
+    &__btn {
         border: {
             right: none !important;
             left: none !important;
