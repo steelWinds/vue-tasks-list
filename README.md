@@ -4,6 +4,8 @@
 
 This simple app on vue
 
+Go to app: [Vue Style](https://steelwinds.github.io/vue-tasks-list/)
+
 # Getting Started 
 
 ## Installing 
