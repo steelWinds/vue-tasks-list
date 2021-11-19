@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import { email, required, minLength } from '@vuelidate/validators';
+import { email, required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { minima } from 'minima-fetch.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
@@ -126,7 +126,6 @@ export default {
                 },
                 password: {
                     required: required,
-                    minLength: minLength(10),
                     $lazy: true
                 }
             }

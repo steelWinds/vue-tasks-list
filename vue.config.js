@@ -1,8 +1,8 @@
-const nodeEnv = process.env.NODE_ENV;
+const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
-    publicPath: nodeEnv === 'production' ? '/vue-tasks-list/' : '/',
+    publicPath: NODE_ENV === 'production' ? '/vue-tasks-list/' : '/',
     devServer: {
         port: 9000
-    }
+    },
 };
