@@ -54,12 +54,23 @@ export default {
             this.authorization = value;
         },
 
-        switchRoute(routeName) {
-            this.startMessage = false;
-            
-            this.$router.push({
-                name: routeName
-            });
+        switchRoute(name, params = {}) {
+            let routeObject = {
+                params: params,
+                replace: true
+            };
+
+            console.log(this);
+
+            let nameToArray = name.split('');
+
+            if (nameToArray.includes('/')) {
+                routeObject.path = name;
+            } else {
+                routeObject.name = name;
+            }
+
+            this.$router.push(routeObject);
         }
     }
 };
