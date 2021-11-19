@@ -58,11 +58,11 @@ export default {
     &:not(:last-child):after {
             position: absolute;
             right: 0;
-            top: -0.15em;
+            top: 0;
 
             content: '';
 
-            height: calc(100% + 0.30em);
+            height: 100%;
             width: 2px;
 
             background-color: white;
