@@ -10,6 +10,7 @@
         <section class="custom-input__wrapper">
             <input 
                 class="custom-input__input"
+                ref="input"
                 v-model="setModel"
                 v-bind="$attrs"
                 :class="{'custom-input_input-padding': switchVisible}"
@@ -21,6 +22,7 @@
 
             <button
                 class="custom-input__btn"
+                tabindex="-1"
                 v-if="switchVisible === true"
                 @click="switchInputVisible()">
 
@@ -114,6 +116,8 @@ export default {
     methods: {
         switchInputVisible() {
             this.visible = !this.visible;
+
+            this.$refs.input.focus();
         },
 
         al() {
