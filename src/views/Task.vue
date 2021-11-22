@@ -20,11 +20,11 @@
                     Back
                 </material-button>
 
-                <material-title class="task__title mb-5">
+                <material-title class="task__title mb-3">
                     {{ this.currentTask.title }}
                 </material-title>
 
-                <i class="task__subtitle mb-1">
+                <i class="task__subtitle mb-3">
                     {{ this.currentTask.subtitle }}
                 </i>
 
@@ -34,7 +34,7 @@
                         items-center
                         self-start
                         gap-2
-                        mb-2">
+                        mb-6">
                     
                     <strong class="flex-shrink-0">
                         Created Time:
@@ -143,6 +143,20 @@ export default {
 
     overflow-wrap: anywhere;
     hyphens: auto;
+
+    &__title {
+        @apply 
+            w-full
+            max-w-4xl;
+    }
+
+    &__subtitle {
+        @apply
+            w-full
+            max-w-xl;
+
+        line-height: 1rem;
+    }
 
     &__time {
         padding: 0 .5em;
