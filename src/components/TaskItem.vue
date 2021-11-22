@@ -25,11 +25,11 @@
         </section>
 
         <h3 class="task-item__title mb-1">
-            {{ this.title }}
+            {{ this.titleContent }}
         </h3>
 
         <i class="task-item__subtitle mb-1">
-            {{ this.subtitle }}
+            {{ this.subtitleContent }}
         </i>
 
         <span 
@@ -47,12 +47,13 @@
         </span>
 
         <p class="task-item__content mt-3">
-            {{ this.text }}
+            {{ this.textContent }}
         </p>
     </article>
 </template>
 
 <script>
+import { cutByLength } from '../modules/cutByLength.js';
 import { minima } from 'minima-fetch.js';
 
 import MaterialButton from './MaterialButton.vue';
@@ -86,6 +87,18 @@ export default {
     computed: {
         createdDate() {
             return new Date(this.date).toLocaleString();
+        },
+
+        titleContent() {
+            return cutByLength(this.title, 100);
+        },
+
+        subtitleContent() {
+            return cutByLength(this.subtitle, 80);
+        },
+
+        textContent() {
+            return cutByLength(this.text, 250);
         }
     },
 
@@ -155,7 +168,6 @@ export default {
         align-self: stretch;
 
         text-align: left !important;
-        white-space: pre-wrap;
 
         &:before {
             position: absolute;
