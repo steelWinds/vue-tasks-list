@@ -60,8 +60,6 @@ export default {
                 replace: true
             };
 
-            console.log(this);
-
             let nameToArray = name.split('');
 
             if (nameToArray.includes('/')) {

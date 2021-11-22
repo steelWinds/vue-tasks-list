@@ -16,7 +16,7 @@
     "core-js": "^3.18.2",
     "husky": "^7.0.4",
     "lodash": "^4.17.21",
-    "minima-fetch.js": "^1.0.8",
+    "minima-fetch.js": "^1.0.9",
     "scrollreveal": "^4.0.9",
     "tailwindcss": "^2.2.15",
     "vue": "^3.0.0",

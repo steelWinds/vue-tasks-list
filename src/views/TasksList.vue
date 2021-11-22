@@ -178,8 +178,6 @@ export default {
             }
 
             this.tasksList = tasksList.data;
-
-            console.log(this.tasksList);
         },
 
         // TODO: add scrollReveal
