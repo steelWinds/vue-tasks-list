@@ -36,12 +36,14 @@
                 class="authorization__input"
                 placeholder="Input your email"
                 required
+                autofocus
                 inputType="email"
                 v-model="auth.email"
                 :switchVisible="false"
                 :class="isInvalidStyle(v$.auth.email.$error)"
                 :invalid="v$.auth.email.$error"
-                invalidMessage="Email is incorrect">
+                :invalidMessage="
+                    externalResults.auth?.email || 'Email is incorrect'">
             </custom-input>
 
             <custom-input
@@ -73,6 +75,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import { useVuelidate } from '@vuelidate/core';
 import { minima } from 'minima-fetch.js';
@@ -111,8 +114,11 @@ export default {
     ],
 
     setup() {
+        const externalResults = ref({});
+
         return {
-            v$: useVuelidate()
+            externalResults,
+            v$: useVuelidate({$externalResults: externalResults})
         };
     },
 
@@ -168,6 +174,8 @@ export default {
 
     methods: {
         async checkValid(callback) {
+            this.externalResults.auth = ref({});
+
             let valid = await this.v$.$validate();
 
             if (valid === false) {
@@ -192,28 +200,35 @@ export default {
                             'Content-Type': 'application/json;charset=utf-8'
                         },
                         json: true,
-                        errorTypes: ['non_field_errors']
                     }
                 );
 
                 this.authKey = this.authKey.data.key;
             } catch(err) {
-                this.requestProcess = false;
+                if (err.errors !== null) {
+                    const errors = {
+                        auth: {
+                            email: err.errors.non_field_errors[0]
+                        }
+                    };
 
-                this.authError.error = err;
+                    Object.assign(this.externalResults, errors);
+                } else {
+                    this.authError.error = err;
                 
+                    switchThroughTime({
+                        target: this.authError,
+                        delay: 2500
+                    });
+                }
+                
+                this.requestProcess = false;
                 this.$refs.authBtn.$el.blur();
-
-                switchThroughTime({
-                    target: this.authError,
-                    delay: 2500
-                });
 
                 return;
             }
 
             this.requestProcess = false;
-
             this.$refs.authBtn.$el.blur();
 
             switchThroughTime({

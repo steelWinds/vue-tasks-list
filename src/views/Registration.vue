@@ -36,9 +36,11 @@
                 class="registration__input"
                 placeholder="Input your email"
                 required
+                autofocus
                 :class="isInvalidStyle(v$.reg.email.$error)"
                 :invalid="v$.reg.email.$error"
-                invalidMessage="Email is incorrect"
+                :invalidMessage="
+                    externalResults.reg?.email || 'Email is incorrect'"
                 v-model="reg.email"
                 inputType="email"
                 :switchVisible="false">
@@ -85,6 +87,7 @@
 </template>
 
 <script>
+import { ref } from 'vue';
 import { email, required, minLength, sameAs } from '@vuelidate/validators';
 import { password } from '../validators/password.js';
 import { useVuelidate } from '@vuelidate/core';
@@ -133,8 +136,11 @@ export default {
     },
 
     setup() {
+        const externalResults = ref({});
+
         return {
-            v$: useVuelidate()
+            externalResults,
+            v$: useVuelidate({$externalResults: externalResults})
         };
     },
 
@@ -200,6 +206,8 @@ export default {
         },
 
         async checkValid(callback) {
+            this.externalResults.reg = ref({});
+
             let valid = await this.v$.$validate();
 
             if (valid === false) {
@@ -224,25 +232,31 @@ export default {
                             'Content-Type': 'application/json;charset=utf-8'
                         },
                         json: true,
-                        errorTypes: ['email', 'non_field_errors']
                     }
                 );
 
                 this.authKey = this.authKey.data.key;
             } catch(err) {
-                this.requestProcess = false;
+                if (err.errors !== null) {
+                    const errors = {
+                        reg: {
+                            email: err.errors.email[0]
+                        }
+                    };
 
-                this.regError.error = err;
+                    Object.assign(this.externalResults, errors);
+                } else {
+                    this.regError.error = err;
+
+                    switchThroughTime({
+                        target: this.regError,
+                        delay: 2500
+                    });
+                }
                 
+                this.requestProcess = false;
                 this.$refs.regBtn.$el.blur();
-
-                console.log(err);
-
-                switchThroughTime({
-                    target: this.regError,
-                    delay: 2500
-                });
-
+                
                 return;
             }
 
