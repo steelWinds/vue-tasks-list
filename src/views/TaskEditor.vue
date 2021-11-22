@@ -31,8 +31,7 @@
         
         <form 
             class="task-editor__form"
-            @click.prevent
-            @keyup.prevent.enter="addTask()">
+            @click.prevent>
             
             <section class="flex flex-col w-full sm:w-auto">
                 <span
@@ -42,6 +41,8 @@
                 </span>
                 <input 
                     class="w-full sm:w-auto" 
+                    tabindex="1"
+                    autofocus
                     :class="checkValid('titleModel', titleModel, 1)"
                     type="text" 
                     placeholder="Input your title"
@@ -56,6 +57,7 @@
                 </span>
                 <input 
                     class="w-full sm:w-auto"
+                    tabindex="2"
                     :class="checkValid('subtitleModel', subtitleModel, 1)" 
                     type="text" 
                     placeholder="Input your subtitle"
@@ -69,6 +71,7 @@
                 </span>
                 <textarea 
                     class="w-full"
+                    tabindex="-1"
                     :class="checkValid('contentModel', contentModel, 1)"
                     name="Text of task" 
                     placeholder="Input your text"
@@ -81,6 +84,7 @@
 
             <material-button
                 class="task-editor__btn"
+                tabindex="3"
                 @click="addTask()"
                 ref="addBtn">
 
@@ -140,6 +144,12 @@ export default {
     },
     
     methods: {
+        clearForm() {
+            this.titleModel = '';
+            this.subtitleModel = '';
+            this.contentModel = '';
+        },
+
         tabSize(event, textModel) {
             let target = event.currentTarget;
 
@@ -178,8 +188,6 @@ export default {
         },
 
         async addTask() { 
-            this.requestProcess = true;
-
             if (this.checkValid('titleModel', this.titleModel, 1) 
                 || this.checkValid('subtitleModel', this.subtitleModel, 1)  
                 || this.checkValid('contentModel', this.contentModel, 1)) {
@@ -187,6 +195,8 @@ export default {
 
                 return;
             }
+
+            this.requestProcess = true;
 
             this.invalids.write = false;
 
@@ -216,9 +226,9 @@ export default {
                     delay: 1000
                 });
             }
-
+            
+            this.clearForm();
             this.requestProcess = false;
-
             this.$refs.addBtn.$el.blur();
 
             switchThroughTime({
