@@ -33,7 +33,6 @@ h1 {
 }
 
 html {
-  margin-right: calc(-1 * (100vw - 100%));
   overflow-x: hidden;
 }
 
