@@ -55,17 +55,21 @@ const routes = [
     },
 
     {
-        path: '/:pathMatch(.*)*', 
-        component: UnavailableURL
-    },
-
-    {
         path: '/task/:pk',
         alias: '/:pk',
         props: true,
         name: 'task',
-        component: Task
-    }
+        component: Task,
+        beforeEnter: () => {
+            return checkAuthKey('auth-key', false);
+        }
+    },
+
+    {
+        path: '/:pathMatch(.*)*', 
+        component: UnavailableURL
+    },
+
 ];
 
 const router = createRouter({
