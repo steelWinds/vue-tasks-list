@@ -47,14 +47,6 @@ export default {
         'getAuthKey',
         'switchRoute'
     ],
-    
-    mounted() {
-        if (this.getAuthKey() !== null) {
-            this.switchRoute('tasks-list');
-        }
-
-        this.startMessage = true;
-    }
 };
 </script>
 

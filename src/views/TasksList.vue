@@ -1,5 +1,6 @@
 <template>
     <article class="tasks-list">
+        
         <material-title class="self-center">
             tasks list
         </material-title>
@@ -77,7 +78,6 @@
 
 <script>
 import { minima } from 'minima-fetch.js';
-import { blockCall } from '../modules/blockCall.js';
 import { switchThroughTime } from '../modules/switchThroughTime.js';
 import { cutByLength } from '../modules/cutByLength.js';
 
@@ -109,7 +109,7 @@ export default {
     },
 
     inject: [
-        'getAuthKey'
+        'getAuthKey',
     ],
 
     components: {
