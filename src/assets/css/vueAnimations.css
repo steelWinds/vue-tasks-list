@@ -46,16 +46,13 @@
 
 .slide-left-leave-active {
   transition: all .35s ease-in;
+  width: 100%;
+  position: absolute;
 }
 
 .slide-left-enter-active,
 .slide-left-leave-active {
   perspective: 1000px;
-}
-
-.slide-left-leave-active {
-  width: 100%;
-  position: absolute;
 }
 
 .slide-left-enter-from,
@@ -77,4 +74,22 @@
 .task-components-leave-to {
   opacity: 0;
   transform: translateY(-100px);
+}
+
+.slide-up-enter-active {
+  transition: all .35s ease-out;
+}
+
+.slide-up-leave-active {
+  transition: all .35s ease-out;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  perspective: 1000px;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(-100%);
 }
