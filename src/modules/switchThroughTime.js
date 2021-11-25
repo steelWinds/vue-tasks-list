@@ -5,7 +5,7 @@ let switchThroughTime = ({
     delay = 0
 }) => {
     
-    target.status = true;
+    target.status = startValue;
 
     setTimeout(() => {
         target.status = endValue;
