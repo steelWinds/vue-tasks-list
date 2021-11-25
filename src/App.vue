@@ -6,7 +6,7 @@
         <transition name="slide-up">
             <header 
                 is="vue:header"
-                v-if="this.$route.name !== 'task' && currentScroll < 200">
+                v-if="this.$route.name !== 'task' && currentScroll <= 200">
             </header>
         </transition>
 
@@ -51,7 +51,13 @@ export default {
 
     methods: {
         setCurrentScroll(event) {
-            this.currentScroll = event.currentTarget.scrollTop;
+            let scroll = event.currentTarget.scrollTop;
+
+            if (this.$route.name === 'task-editor') {
+                return 0;
+            }
+
+            return scroll;
         },
 
         getAuthKey() {

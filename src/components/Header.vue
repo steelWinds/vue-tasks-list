@@ -60,7 +60,7 @@ import MaterialButton from './MaterialButton.vue';
 export default {
     data() {
         return {
-            currentRoute: 'tasks-list',
+            defaultRoute: 'tasks-list',
         };
     },
 
@@ -85,9 +85,9 @@ export default {
                 'top': ''
             };
 
-            if (this.currentRoute === 'task-editor') {
+            if (this.currentRouteName === 'task-editor') {
                 styleObject['top'] = 'auto';
-            } else if (this.currentRoute === 'tasks-list') {
+            } else if (this.currentRouteName === 'tasks-list') {
                 styleObject['top'] = '0';
             }
 
@@ -97,6 +97,14 @@ export default {
 
             return styleObject;
         },
+
+        currentRouteName() {
+            if (this.$router.currentRoute.value.name) {
+                return this.$router.currentRoute.value.name;
+            }
+
+            return this.defaultRoute;
+        }
     },
 
     methods: {
@@ -105,7 +113,7 @@ export default {
                 ['material-button_active']: false
             };
 
-            if (this.currentRoute === routeName) {
+            if (this.currentRouteName === routeName) {
                 styleObject['material-button_active'] = true;
 
                 return styleObject;
