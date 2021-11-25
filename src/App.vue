@@ -1,6 +1,14 @@
 <template>
-    <article class="container">
-        <header is="vue:header"></header>
+    <article 
+        class="container"
+        @scroll.passive="setCurrentScroll($event)">
+        
+        <transition name="slide-up">
+            <header 
+                is="vue:header"
+                v-if="this.$route.name !== 'task' && currentScroll < 200">
+            </header>
+        </transition>
 
         <main class="container__main">
             <router-view></router-view>
@@ -16,7 +24,8 @@ import Header from './components/Header.vue';
 export default {
     data() {
         return {
-            authorization: false
+            authorization: false,
+            currentScroll: 0
         };
     },
 
@@ -30,6 +39,9 @@ export default {
             setAuthKey: this.setAuthKey,
             switchRoute: this.switchRoute,
             removeAuthKey: this.removeAuthKey,
+            currentTasksListScroll: computed(() => {
+                return this.currentTasksListScroll;
+            }), 
             logoutAccess: computed(() => {
                 return this.authorization;
             }),
@@ -38,6 +50,10 @@ export default {
     },
 
     methods: {
+        setCurrentScroll(event) {
+            this.currentScroll = event.currentTarget.scrollTop;
+        },
+
         getAuthKey() {
             return window.localStorage.getItem('auth-key');
         },
@@ -80,9 +96,11 @@ export default {
         w-full
         h-full
         max-w-full
-        min-h-screen !important;
+        max-h-screen !important;
 
     position: relative;
+
+    overflow-y: auto;
 
     &__main {
         @apply flex flex-col items-center;
