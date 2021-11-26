@@ -1,12 +1,12 @@
 <template>
     <article 
         class="container"
-        @scroll.passive="setCurrentScroll($event)">
+        @scroll.passive="debounceSetCurrentScroll($event)">
         
         <transition name="slide-up">
             <header 
                 is="vue:header"
-                v-if="this.$route.name !== 'task' && currentScroll <= 200">
+                v-if="this.$route.name !== 'task' && currentScroll < 200">
             </header>
         </transition>
 
@@ -18,6 +18,7 @@
 
 <script>
 import { computed } from 'vue';
+import { debounce } from 'lodash';
 
 import Header from './components/Header.vue';
 
@@ -49,15 +50,24 @@ export default {
         };
     },
 
+    created() {
+        this.debounceSetCurrentScroll = debounce(
+            this.setCurrentScroll,
+            100
+        );
+    },
+
     methods: {
         setCurrentScroll(event) {
-            let scroll = event.currentTarget.scrollTop;
+            let scroll = event.target.scrollTop;
 
             if (this.$route.name === 'task-editor') {
-                return 0;
+                this.currentScroll = 0;
+
+                return;
             }
 
-            return scroll;
+            this.currentScroll = scroll;
         },
 
         getAuthKey() {
