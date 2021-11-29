@@ -36,17 +36,17 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: .15em solid var(--color-green);
+    border: .15em solid var(--color-green) !important;
 
     &__box {
         width: inherit;
         height: inherit;
         border-radius: inherit;
 
-        background-color: var(--color-green);
+        background-color: var(--color-green) !important;
 
         animation: bubble 1s infinite;
-        perpsective: 1000px;
+        perspective: 1000px;
     }
 }
 </style>

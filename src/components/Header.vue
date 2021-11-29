@@ -160,7 +160,8 @@ export default {
     color: white;
 
     z-index: 100;
-    
+    transition: all .25s ease-in-out;
+
     &__title {
         text-transform: capitalize;
 

@@ -6,7 +6,8 @@
         <transition name="slide-up">
             <header 
                 is="vue:header"
-                v-if="this.$route.name !== 'task' && currentScroll < 200">
+                :style="headerVisible"
+                v-if="this.$route.name !== 'task'">
             </header>
         </transition>
 
@@ -26,7 +27,10 @@ export default {
     data() {
         return {
             authorization: false,
-            currentScroll: 0
+            currentScroll: 400,
+            headerVisible: {
+                'opacity': 1
+            },
         };
     },
 
@@ -53,21 +57,21 @@ export default {
     created() {
         this.debounceSetCurrentScroll = debounce(
             this.setCurrentScroll,
-            100
+            65
         );
     },
 
     methods: {
         setCurrentScroll(event) {
-            let scroll = event.target.scrollTop;
+            let targetScrollTop = event.target.scrollTop;
 
-            if (this.$route.name === 'task-editor') {
-                this.currentScroll = 0;
-
-                return;
+            if (targetScrollTop < this.currentScroll) {
+                this.headerVisible['opacity'] = 1;
+            } else if (targetScrollTop >= this.currentScroll) {
+                this.headerVisible['opacity'] = 0;
             }
 
-            this.currentScroll = scroll;
+            this.currentScroll = targetScrollTop === 0 ? 400 : targetScrollTop;
         },
 
         getAuthKey() {

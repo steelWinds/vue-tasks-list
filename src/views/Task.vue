@@ -1,8 +1,8 @@
 <template>
     <article class="task">
         <transition name="slide-down" mode="out-in">
-            <preloader 
-                class="self-center mt-10"
+            <preloader
+                class="task__preloader"
                 v-if="currentTask === null">
             </preloader>
 
@@ -143,6 +143,15 @@ export default {
 
     overflow-wrap: anywhere;
     hyphens: auto;
+
+    &__preloader {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+
+        transform: translateX(-50%);
+        z-index: 1000;
+    }
 
     &__title {
         @apply 
