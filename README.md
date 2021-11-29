@@ -10,16 +10,28 @@ Go to app: [Vue Style](https://steelwinds.github.io/vue-tasks-list/)
 
 ## Installing 
 
-- If you have not ```node.js```, then install it.
-- When ```node.js``` are installed, you can run ```npm i``` or ```pnpm run``` for install packages.
+You need cd in project repo, and install depends
+
+```
+cd ./vue-tasks-list
+npm i
+```
 
 ## Development
 
-- For run project on dev server you can run ```npm serve``` or ```pnpm serve```
+For run project on dev server you can run:
+
+```
+npm run serve
+```
 
 ## Build
 
-- For build project you can run ```npm serve``` or ```pnpm serve```
+For build project you can run:
+
+```
+npm run build
+```
 
 # License
 
