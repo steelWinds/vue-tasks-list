@@ -12,7 +12,13 @@
         </transition>
 
         <main class="container__main">
-            <router-view></router-view>
+            <router-view v-slot="{ Component }">
+                <transition name="slide-down" mode="out-in">
+                    <keep-alive>
+                        <component :is="Component" />
+                    </keep-alive>
+                </transition>
+            </router-view>
         </main>
     </article>
 </template>
@@ -114,9 +120,9 @@ export default {
 .container {
     @apply 
         w-full
-        h-full
-        max-w-full
-        max-h-screen !important;
+        h-0
+        max-w-full 
+        min-h-screen !important;
 
     position: relative;
 

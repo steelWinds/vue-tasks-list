@@ -26,7 +26,7 @@
 }
 
 .slide-down-leave-active {
-  transition: all .15s ease-in;
+  transition: all .25s ease-in;
 }
 
 .slide-down-enter-active,
@@ -37,7 +37,7 @@
 .slide-down-enter-from,
 .slide-down-leave-to {
   opacity: 0;
-  transform: scale(.9) translateY(30px);
+  transform: translateY(25px);
 }
 
 .slide-left-enter-active {
