@@ -250,7 +250,7 @@ export default {
         items-center;
 
     padding: 0 1em;
-    padding-bottom: 1em;
+    padding-bottom: 15vh;
 
     &__form {
         @apply 

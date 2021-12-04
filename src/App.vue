@@ -69,6 +69,10 @@ export default {
 
     methods: {
         setCurrentScroll(event) {
+            if (this.$route.name === 'task-editor') {
+                return;
+            }
+
             let targetScrollTop = event.target.scrollTop;
 
             if (targetScrollTop < this.currentScroll) {
