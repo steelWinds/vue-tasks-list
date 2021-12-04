@@ -12,10 +12,12 @@
         </transition>
 
         <main class="container__main">
-            <router-view v-slot="{ Component }">
+            <router-view v-slot="{ Component, route }">
                 <transition name="slide-down" mode="out-in">
                     <keep-alive>
-                        <component :is="Component" />
+                        <component 
+                            :is="Component" 
+                            :key="route.name" />
                     </keep-alive>
                 </transition>
             </router-view>
