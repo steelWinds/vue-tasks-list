@@ -1,7 +1,7 @@
 <template>
     <article 
         class="container"
-        @scroll.passive="debounceSetCurrentScroll($event)">
+        @scroll.passive="throttleSetCurrentScroll($event)">
         
         <transition name="slide-up">
             <header 
@@ -24,7 +24,7 @@
 
 <script>
 import { computed } from 'vue';
-import { debounce } from 'lodash';
+import { throttle } from 'lodash';
 
 import Header from './components/Header.vue';
 
@@ -32,7 +32,8 @@ export default {
     data() {
         return {
             authorization: false,
-            currentScroll: 400,
+            currentScroll: 0,
+            startHideHeaderPoint: 400,
             headerVisible: {
                 'opacity': 1
             },
@@ -60,7 +61,7 @@ export default {
     },
 
     created() {
-        this.debounceSetCurrentScroll = debounce(
+        this.throttleSetCurrentScroll = throttle(
             this.setCurrentScroll,
             65
         );
@@ -74,13 +75,14 @@ export default {
 
             let targetScrollTop = event.target.scrollTop;
 
-            if (targetScrollTop < this.currentScroll) {
+            if (targetScrollTop < this.currentScroll - 10) {
                 this.headerVisible['opacity'] = 1;
             } else if (targetScrollTop >= this.currentScroll) {
                 this.headerVisible['opacity'] = 0;
             }
 
-            this.currentScroll = targetScrollTop === 0 ? 400 : targetScrollTop;
+            this.currentScroll = targetScrollTop <= this.startHideHeaderPoint ? 
+                this.startHideHeaderPoint : targetScrollTop;
         },
 
         getAuthKey() {
@@ -123,8 +125,8 @@ export default {
 .container {
     @apply 
         w-full
-        h-0
         max-w-full 
+        h-0
         min-h-screen !important;
 
     position: relative;
@@ -132,7 +134,10 @@ export default {
     overflow-y: auto;
 
     &__main {
-        @apply flex flex-col items-center;
+        @apply 
+            flex 
+            flex-col 
+            items-center;
     }
 }
 </style>

@@ -54,7 +54,6 @@
 
 <script>
 import { cutByLength } from '../modules/cutByLength.js';
-import { minima } from 'minima-fetch.js';
 
 import MaterialButton from './MaterialButton.vue';
 
