@@ -2,7 +2,7 @@
     <article class="task">
         <transition name="slide-down" mode="out-in">
             <preloader
-                class="task__preloader"
+                class="task__preloader mt-12"
                 v-if="currentTask === null">
             </preloader>
 
@@ -145,12 +145,8 @@ export default {
     hyphens: auto;
 
     &__preloader {
-        position: fixed;
-        top: 20%;
-        left: 50%;
-
-        transform: translateX(-50%);
-        z-index: 1000;
+        @apply 
+            self-center;
     }
 
     &__title {
