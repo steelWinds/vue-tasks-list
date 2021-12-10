@@ -99,8 +99,8 @@ export default {
         },
 
         currentRouteName() {
-            if (this.$router.currentRoute.value.name) {
-                return this.$router.currentRoute.value.name;
+            if (this.$route.name) {
+                return this.$route.name;
             }
 
             return this.defaultRoute;

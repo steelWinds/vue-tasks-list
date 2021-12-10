@@ -6,8 +6,7 @@
         <transition name="slide-up">
             <header 
                 is="vue:header"
-                :style="headerVisible"
-                v-if="this.$route.name !== 'task'">
+                :style="headerVisible">
             </header>
         </transition>
 
