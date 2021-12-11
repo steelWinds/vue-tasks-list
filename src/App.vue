@@ -75,7 +75,7 @@ export default {
 
             let targetScrollTop = event.target.scrollTop;
 
-            if (targetScrollTop < this.currentScroll - 10) {
+            if (targetScrollTop < this.currentScroll) {
                 this.headerVisible['opacity'] = 1;
             } else if (targetScrollTop >= this.currentScroll) {
                 this.headerVisible['opacity'] = 0;
